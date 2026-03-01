@@ -79,19 +79,16 @@ body{
 #b2{ padding: 2% 8%; margin-bottom: 17%; } /* Distance between locations */
 #b3{ padding: 2% 8%; margin-bottom: 15%; } /* Distance to RSVP */
 #b4{ padding: 2% 8%; margin-bottom: 2%; }
-#b5{ margin-top: auto; padding-bottom: 10%; }
+#b5{ margin-top: auto; padding-bottom: 25%; }
 
 
 /* ── TEXT HELPERS ──────────────────────── */
+/* Removed white glows and added crisp, subtle dark shadows for better mobile readability */
 .on-light{
-  text-shadow:
-    0 0 18px rgba(249,246,240,0.95),
-    0 1px 4px rgba(249,246,240,0.8);
+  text-shadow: 1px 2px 4px rgba(59,51,43,0.4);
 }
 .on-dark{
-  text-shadow:
-    0 1px 8px rgba(59,51,43,0.95),
-    0 0 18px rgba(59,51,43,0.85);
+  text-shadow: 1px 2px 4px rgba(0,0,0,0.6);
 }
 
 
@@ -128,7 +125,6 @@ body{
   font-family:'Sacramento',cursive;
   font-size:clamp(2.4rem,11vw,4rem);
   color:var(--roseDark); line-height:1.0;
-  filter:drop-shadow(0 1px 4px rgba(255,255,255,0.85));
 }
 .amp{
   font-family:'Cinzel',serif;
@@ -177,24 +173,16 @@ body{
    BANDS 2 & 3 — VENUE CARDS
 ═══════════════════════════════════════ */
 .venue-pill{
-  background:rgba(255,255,255,0.15); /* More transparent */
-  border:1px solid rgba(179,146,86,0.4);
-  padding:clamp(6px,1.8vw,12px) clamp(10px,3vw,20px);
-  width:90%; max-width:320px;
-  backdrop-filter:blur(8px); /* Blur to maintain legibility */
-  -webkit-backdrop-filter:blur(8px);
-  position:relative;
+  background: transparent; /* Completely transparent */
+  border: none; /* Removed frames */
+  padding: clamp(6px,1.8vw,12px) 0;
+  width: 90%; max-width: 320px;
+  position: relative;
 }
-.venue-pill::before,.venue-pill::after{
-  content:''; position:absolute; width:14px; height:14px;
-  border-style:solid; border-color:var(--dgold);
-}
-.venue-pill::before{top:-1px;left:-1px; border-width:1.5px 0 0 1.5px;}
-.venue-pill::after {bottom:-1px;right:-1px; border-width:0 1.5px 1.5px 0;}
 
-/* Ensuring text pops against transparent background */
+/* Ensuring text pops against transparent background with crisp shadow */
 .v-time, .v-event, .v-where {
-  text-shadow: 0 0 15px rgba(255,255,255,0.9), 0 1px 4px rgba(255,255,255,0.7);
+  text-shadow: 1px 2px 4px rgba(59,51,43,0.4);
 }
 .v-time{
   font-family:'Cinzel',serif; font-weight:600;
@@ -347,7 +335,6 @@ body{
   font-family:'Sacramento',cursive;
   font-size:clamp(1rem,4vw,1.5rem);
   color:var(--sage); margin:3px 0;
-  text-shadow:0 0 12px rgba(255,255,255,0.45);
 }
 .closing-date{
   font-family:'Cinzel',serif;
