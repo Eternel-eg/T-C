@@ -39,6 +39,32 @@ body{
   font-family:'EB Garamond',serif;
 }
 
+/* ── LOADER ──────────────────────────────── */
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #0e160f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.8s ease;
+}
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(179,146,86,0.2);
+  border-top-color: var(--dgold);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 /* ── PAGE WRAPPER ──────────────────────────
    Width fixed; height = width × 7.2993
    Background image fills exactly once.
@@ -49,10 +75,15 @@ body{
   /* height tracks width × image ratio */
   height: calc(min(100vw, 430px) * 7.2993);
   position:relative;
-  background: url('https://drive.google.com/thumbnail?id=1RxFsxiLhhqTNZ0XnQdeJvUv-PKJPNTpk&sz=w2000') top center / 100% 100% no-repeat;
+  background: url('https://drive.google.com/thumbnail?id=1A8ISLflJWbH95PBFyJwD61F4Rw_miqEd&sz=w2000') top center / 100% 100% no-repeat;
   overflow:hidden;           /* nothing escapes the image */
   display:flex;
   flex-direction:column;
+  opacity: 0;                /* Hidden initially */
+  transition: opacity 1.5s ease; /* Smooth fade in */
+}
+.page.loaded {
+  opacity: 1;
 }
 
 /* ── BANDS ─────────────────────────────────
@@ -71,16 +102,15 @@ body{
 }
 
 /* Band 1 takes exactly 49.7% height to push the subsequent content down */
-#b1{ height: 49.7%; justify-content: flex-start; padding-top: 58%; }
+#b1{ height: 49.7%; justify-content: flex-start; padding-top: 54%; }
 
-/* The quote and date sections */
-#quote-band { padding: 2% 8%; margin-top: 18%; margin-bottom: 2%; } 
-#date-band { padding: 2% 2%; margin-bottom: 3%; }
+/* The quote now has its own section so you can easily adjust the margin below it */
+#quote-band { padding: 2% 8%; margin-top: 8%; margin-bottom: 22%; } 
 
-#b2{ padding: 2% 8%; margin-bottom: 3%; } /* Distance between locations */
-#b3{ padding: 2% 8%; margin-bottom: 3%; } /* Distance to RSVP */
-#b4{ padding: 2% 8%; margin-bottom: 10%; }
-#b5{ margin-top: auto; padding-bottom: 30%; }
+#b2{ padding: 2% 8%; margin-bottom: 17%; } /* Distance between locations */
+#b3{ padding: 2% 8%; margin-bottom: 30%; } /* Distance to RSVP */
+#b4{ padding: 2% 8%; margin-bottom: 40%; }
+#b5{ margin-top: auto; padding-bottom: 20%; }
 
 
 /* ── TEXT HELPERS ──────────────────────── */
@@ -128,15 +158,10 @@ body{
 }
 .name-big{
   font-family:'Sacramento',cursive;
-  font-size:clamp(3.5rem,15vw,5.5rem); /* Increased font size */
-  color:var(--roseDark); line-height:1.0;
-}
-.amp{
-  font-family:'Cinzel',serif;
-  font-size:clamp(2rem,8vw,3rem); /* Increased font size */
-  color:var(--ink); 
-  display:block; 
-  margin: -15px 0; /* Adjusted negative margin to keep the larger names close */
+  font-size:clamp(2.6rem, 11vw, 4rem); /* Sized perfectly for a single line */
+  color:var(--roseDark); 
+  line-height:1.1;
+  text-align: center;
 }
 
 /* Stacked Date Style */
@@ -367,9 +392,16 @@ body{
 <body>
 
 <!-- ══════════════════════════════════════
+     LOADING SCREEN
+══════════════════════════════════════ -->
+<div id="loader">
+  <div class="spinner"></div>
+</div>
+
+<!-- ══════════════════════════════════════
      PAGE — image is the canvas
 ══════════════════════════════════════ -->
-<div class="page">
+<div class="page" id="mainPage">
 
   <!-- ┌──────────────────────────────────
        │  BAND 1 · INVITATION TEXT
@@ -384,9 +416,14 @@ body{
     <div class="rule on-light" style="margin:3px auto;"></div>
 
     <div class="ani ani-2">
-      <div class="name-big on-light">Teresa</div>
-      <span class="amp on-light">&</span>
-      <div class="name-big on-light">Claudio</div>
+      <div class="name-big on-light">Teresa &amp; Claudio</div>
+    </div>
+
+    <div class="rule" style="margin:3px auto;"></div>
+
+    <div class="date-stack ani ani-3">
+      <div class="ds-line1 on-light">On Monday the 16th of March</div>
+      <div class="ds-year on-light">2026</div>
     </div>
 
   </div><!-- END BAND 1 -->
@@ -404,19 +441,6 @@ body{
     <div class="rule rev" style="width:30%;margin:0 auto;"></div>
 
   </div><!-- END QUOTE -->
-
-
-  <!-- ┌──────────────────────────────────
-       │  DATE SECTION 
-       └────────────────────────────────── -->
-  <div id="date-band" class="band">
-
-    <div class="date-stack rev">
-      <div class="ds-line1 on-light">On Monday the 16th of March</div>
-      <div class="ds-year on-light">2026</div>
-    </div>
-
-  </div><!-- END DATE SECTION -->
 
 
   <!-- ┌──────────────────────────────────
@@ -566,6 +590,35 @@ body{
 
 
 <script>
+// ── LOADER LOGIC ──────────────────────────────────
+// Wait for everything (including images and fonts) to load
+window.addEventListener('load', function() {
+  const loader = document.getElementById('loader');
+  const page = document.getElementById('mainPage');
+  
+  // Start fading out the loader
+  loader.style.opacity = '0';
+  
+  setTimeout(() => {
+    // Hide the loader completely
+    loader.style.display = 'none';
+    // Trigger the page fade-in
+    page.classList.add('loaded');
+  }, 800); // 800ms matches the CSS transition time
+});
+
+// Fallback in case load event fails or takes unusually long (e.g., slow network)
+setTimeout(() => {
+  const loader = document.getElementById('loader');
+  if(loader && loader.style.display !== 'none') {
+    loader.style.opacity = '0';
+    setTimeout(() => {
+      loader.style.display = 'none';
+      document.getElementById('mainPage').classList.add('loaded');
+    }, 800);
+  }
+}, 5000); // 5 seconds max wait
+
 // ── RSVP MODAL LOGIC ──────────────────────────────
 function openRSVP() {
   document.getElementById('rsvpModal').classList.add('active');
