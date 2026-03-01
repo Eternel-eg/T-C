@@ -49,7 +49,7 @@ body{
   /* height tracks width × image ratio */
   height: calc(min(100vw, 430px) * 7.2993);
   position:relative;
-  background: url('https://drive.google.com/thumbnail?id=1O5qQTmERJ1X89tZ8uswvGpaWdEvPKiMD&sz=w2000') top center / 100% 100% no-repeat;
+  background: url('https://drive.google.com/thumbnail?id=1RxFsxiLhhqTNZ0XnQdeJvUv-PKJPNTpk&sz=w2000') top center / 100% 100% no-repeat;
   overflow:hidden;           /* nothing escapes the image */
   display:flex;
   flex-direction:column;
@@ -74,12 +74,12 @@ body{
 #b1{ height: 49.7%; justify-content: flex-start; padding-top: 54%; }
 
 /* The quote now has its own section so you can easily adjust the margin below it */
-#quote-band { padding: 2% 8%; margin-top: 20%; margin-bottom: 20%; } 
+#quote-band { padding: 2% 8%; margin-top: 20%; margin-bottom: 10%; } 
 
-#b2{ padding: 2% 8%; margin-bottom: 17%; } /* Distance between locations */
-#b3{ padding: 2% 8%; margin-bottom: 15%; } /* Distance to RSVP */
-#b4{ padding: 2% 8%; margin-bottom: 2%; }
-#b5{ margin-top: auto; padding-bottom: 32%; }
+#b2{ padding: 2% 8%; margin-bottom: 5%; } /* Distance between locations */
+#b3{ padding: 2% 8%; margin-bottom: 5%; } /* Distance to RSVP */
+#b4{ padding: 2% 8%; margin-bottom: 40%; }
+#b5{ margin-top: auto; padding-bottom: 25%; }
 
 
 /* ── TEXT HELPERS ──────────────────────── */
@@ -107,7 +107,7 @@ body{
 /* ── MICRO LABEL ───────────────────────── */
 .lbl{
   font-family:'Cinzel',serif;
-  font-size:clamp(0.38rem,1.5vw,0.55rem);
+  font-size:clamp(0.7rem,3.5vw,1rem);
   letter-spacing:0.5em; text-transform:uppercase;
   color:var(--ink); opacity:0.8;
 }
@@ -116,10 +116,14 @@ body{
    BAND 1 — INVITATION
 ═══════════════════════════════════════ */
 .pre-text{
-  font-family:'EB Garamond',serif; font-style:italic;
-  font-size:clamp(0.6rem,2.8vw,0.88rem);
-  color:var(--ink); letter-spacing:0.06em; line-height:1.7;
-  margin-bottom:3px;
+  font-family:'EB Garamond',serif; 
+  font-style:italic;
+  font-size:clamp(0.95rem, 4vw, 1.25rem); /* Increased size for elegance & readability */
+  font-weight: 500; /* Made slightly bolder */
+  color:var(--ink); 
+  letter-spacing:0.08em; 
+  line-height:1.6;
+  margin-bottom:12px; /* Increased bottom spacing */
 }
 .name-big{
   font-family:'Sacramento',cursive;
@@ -129,9 +133,9 @@ body{
 .amp{
   font-family:'Cinzel',serif;
   font-size:clamp(1.5rem,6vw,2.2rem);
-  color:var(--dgold); 
+  color:var(--ink); 
   display:block; 
-  margin: 2px 0;
+  margin: -10px 0; /* Negative margin to pull the names much closer */
 }
 
 /* Stacked Date Style */
@@ -186,17 +190,17 @@ body{
 }
 .v-time{
   font-family:'Cinzel',serif; font-weight:600;
-  font-size:clamp(1rem,4.5vw,1.6rem);
+  font-size:clamp(1.6rem,7vw,2.4rem);
   color:var(--ink); line-height:1; margin-bottom:1px;
 }
 .v-event{
   font-family:'Sacramento',cursive;
-  font-size:clamp(1rem,4.5vw,1.5rem);
+  font-size:clamp(1.6rem,7vw,2.2rem);
   color:var(--roseDark); margin-bottom:2px; line-height:1.1;
 }
 .v-where{
   font-family:'EB Garamond',serif; font-style:italic;
-  font-size:clamp(0.55rem,2.2vw,0.8rem);
+  font-size:clamp(0.95rem,4vw,1.25rem);
   color:var(--ink); line-height:1.7; margin-bottom:6px;
 }
 
@@ -207,12 +211,12 @@ body{
 }
 .loc-btn{
   display:inline-flex; align-items:center; gap:4px;
-  padding:6px 14px;
+  padding:8px 18px;
   background:rgba(255,255,255,0.25);
   border:1px solid var(--dgold);
   color:var(--ink);
   font-family:'Cinzel',serif;
-  font-size:clamp(0.45rem,2vw,0.6rem);
+  font-size:clamp(0.65rem,3vw,0.9rem);
   letter-spacing:0.2em; text-transform:uppercase;
   text-decoration:none; cursor:pointer;
   transition:all 0.25s;
@@ -334,13 +338,13 @@ body{
 .hearts{
   font-family:'Sacramento',cursive;
   font-size:clamp(1rem,4vw,1.5rem);
-  color:var(--sage); margin:3px 0;
+  color:#000000; margin:0;
 }
 .closing-date{
   font-family:'Cinzel',serif;
   font-size:clamp(0.38rem,1.4vw,0.52rem);
-  letter-spacing:0.4em; color:var(--ink); opacity:0.55;
-  margin-top:3px;
+  letter-spacing:0.4em; color:#000000; opacity:1;
+  margin-top:2px; text-shadow:none;
 }
 
 /* ── ANIMATIONS ─────────────────────────── */
@@ -485,8 +489,8 @@ body{
       <p class="closing-love on-light">With all our love,</p>
       <div class="closing-names on-light">Teresa &amp; Claudio</div>
       <div class="hearts">♡ &nbsp; ♡ &nbsp; ♡</div>
-      <div class="rule" style="width:55%;margin:6px auto;"></div>
-      <p class="closing-date on-light">16 · March · 2026 · Cairo, Egypt</p>
+      <div class="rule" style="width:55%;margin:2px auto;"></div>
+      <p class="closing-date">16 · March · 2026 · Cairo, Egypt</p>
     </div>
 
   </div><!-- END BAND 5 -->
