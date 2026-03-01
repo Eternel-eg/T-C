@@ -71,15 +71,16 @@ body{
 }
 
 /* Band 1 takes exactly 49.7% height to push the subsequent content down */
-#b1{ height: 49.7%; justify-content: flex-start; padding-top: 54%; }
+#b1{ height: 49.7%; justify-content: flex-start; padding-top: 58%; }
 
-/* The quote now has its own section so you can easily adjust the margin below it */
-#quote-band { padding: 2% 8%; margin-top: 20%; margin-bottom: 10%; } 
+/* The quote and date sections */
+#quote-band { padding: 2% 8%; margin-top: 18%; margin-bottom: 2%; } 
+#date-band { padding: 2% 2%; margin-bottom: 2%; }
 
-#b2{ padding: 2% 8%; margin-bottom: 5%; } /* Distance between locations */
-#b3{ padding: 2% 8%; margin-bottom: 5%; } /* Distance to RSVP */
-#b4{ padding: 2% 8%; margin-bottom: 40%; }
-#b5{ margin-top: auto; padding-bottom: 25%; }
+#b2{ padding: 2% 8%; margin-bottom: 2%; } /* Distance between locations */
+#b3{ padding: 2% 8%; margin-bottom: 2%; } /* Distance to RSVP */
+#b4{ padding: 2% 8%; margin-bottom: 10%; }
+#b5{ margin-top: auto; padding-bottom: 30%; }
 
 
 /* ── TEXT HELPERS ──────────────────────── */
@@ -148,13 +149,13 @@ body{
 .ds-line1 {
   font-family: 'EB Garamond', serif;
   font-style: italic;
-  font-size: clamp(1.2rem, 5vw, 1.6rem);
+  font-size: clamp(1.4rem, 6vw, 1.8rem);
   color: var(--ink);
   margin-bottom: 4px;
 }
 .ds-year {
   font-family: 'Cinzel', serif;
-  font-size: clamp(0.7rem, 3vw, 0.9rem);
+  font-size: clamp(0.8rem, 3.5vw, 1rem);
   letter-spacing: 0.4em;
   color: var(--ink);
   margin-top: 2px;
@@ -166,10 +167,10 @@ body{
 .quote-text{
   font-family:'EB Garamond',serif; 
   font-style:italic;
-  font-size:clamp(0.85rem,3.5vw,1.1rem);
+  font-size:clamp(1.1rem, 4.5vw, 1.4rem); /* Increased Quote Size */
   color:var(--ink); 
   line-height:1.6;
-  margin-bottom:12px;
+  margin-bottom:15px;
   padding: 0 4%;
 }
 
@@ -388,13 +389,6 @@ body{
       <div class="name-big on-light">Claudio</div>
     </div>
 
-    <div class="rule" style="margin:3px auto;"></div>
-
-    <div class="date-stack ani ani-3">
-      <div class="ds-line1 on-light">Monday the 16th of March</div>
-      <div class="ds-year on-light">2026</div>
-    </div>
-
   </div><!-- END BAND 1 -->
 
 
@@ -410,6 +404,19 @@ body{
     <div class="rule rev" style="width:30%;margin:0 auto;"></div>
 
   </div><!-- END QUOTE -->
+
+
+  <!-- ┌──────────────────────────────────
+       │  DATE SECTION 
+       └────────────────────────────────── -->
+  <div id="date-band" class="band">
+
+    <div class="date-stack rev">
+      <div class="ds-line1 on-light">On Monday the 16th of March</div>
+      <div class="ds-year on-light">2026</div>
+    </div>
+
+  </div><!-- END DATE SECTION -->
 
 
   <!-- ┌──────────────────────────────────
