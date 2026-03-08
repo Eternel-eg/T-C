@@ -12,33 +12,43 @@
    Change the values below to control spacing and sizes
 ══════════════════════════════════════════════════════ */
 :root {
-  /* --- 1. SPACING FOR THE UPPER PART (BAND 1) --- */
-  --space-below-pre-text: 2px;  /* Distance below "Together with their families..." */
-  --space-around-names: 2px;     /* Distance above and below the names "Teresa & Claudio" */
-  --space-above-date: 2px;      /* Distance above "On Monday the 16th..." */
+  /* --- 1. UPPER NAMES CONTROL ("Teresa & Claudio") --- */
+  --font-name-big: 'Sacramento', cursive;
+  --color-name-big: var(--roseDark);
+  --size-name-big: clamp(2.6rem, 11vw, 2rem);
+  --lh-name-big: 2.5;
+  --space-around-names: 15px;
 
-  /* --- 2. FONT SIZES FOR THE LOWER PART --- */
-  /* Note: clamp(mobile_size, scaling_size, desktop_size) */
-  --size-venue-time: clamp(1.6rem, 7vw, 2.4rem);      /* "3:00 PM", "5:00 PM" */
-  --size-venue-event: clamp(1.6rem, 7vw, 2.2rem);     /* "Church Ceremony" */
-  --size-venue-where: clamp(0.95rem, 4vw, 1.25rem);   /* Address details */
-  
-  --size-waiting: clamp(1.5rem, 7vw, 2.4rem);         /* "We are waiting for you..." */
-  
-  --size-closing-names: clamp(1.8rem, 6.5vw, 2.6rem); /* "Teresa & Claudio" at the bottom */
-  --size-closing-love: clamp(0.5rem, 1.2vw, 0.75rem); /* "With all our love" */
+  /* --- 2. OTHER SPACING & SIZES FOR THE UPPER PART (BAND 1) --- */
+  --space-below-pre-text: 8px;
+  --space-above-date: 1px;
+  --size-pre-text: clamp(1rem, 2vw, 0.6rem);
+  --size-date-line1: clamp(1rem, 6vw, 1.6rem);
+  --size-date-year: clamp(0.8rem, 3.5vw, 1rem);
+  --lh-pre-text: 1.4;
+  --lh-date-line1: 1.2;
+  --lh-date-year: 1.2;
+
+  /* --- 3. FONT SIZES FOR THE LOWER PART --- */
+  --size-venue-time: clamp(1.6rem, 7vw, 1.4rem);
+  --size-venue-event: clamp(1.6rem, 7vw, 1.2rem);
+  --size-venue-where: clamp(0.95rem, 4vw, 1.25rem);
+  --size-waiting: clamp(1.5rem, 7vw, 2.4rem);
+  --size-closing-names: clamp(1.8rem, 6.5vw, 2.6rem);
+  --size-closing-love: clamp(0.8rem, 1.2vw, 1.4rem);
 
   /* ─────────────────────────────────────────
      COLOUR PALETTE
   ───────────────────────────────────────── */
-  --ink:       #4A6094; 
-  --rose:      #9471A1; 
-  --sage:      #a19688; 
-  --parch:     #f9f6f0; 
-  --dgold:     #b39256; 
-  --ivory:     #ffffff; 
-  --roseDark:  #9471A1; 
-  --sageLight: #d1cbbd; 
+  --ink:       #A68E6B;
+  --rose:      #C7B596;
+  --sage:      #a19688;
+  --parch:     #f9f6f0;
+  --dgold:     #b39256;
+  --ivory:     #ffffff;
+  --roseDark:  #6c8785;
+  --sageLight: #d1cbbd;
+  --loader-bg: #0c1410;
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -52,30 +62,174 @@ body{
   font-family:'EB Garamond',serif;
 }
 
-/* ── LOADER ──────────────────────────────── */
+/* ══════════════════════════════════════════════════════
+   ✦ CINEMATIC LOADER — REDESIGNED
+══════════════════════════════════════════════════════ */
 #loader {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: #0e160f;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: var(--loader-bg);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  transition: opacity 0.8s ease;
+  overflow: hidden;
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.spinner {
-  width: 50px;
-  height: 50px;
-  border: 3px solid rgba(179,146,86,0.2);
-  border-top-color: var(--dgold);
+
+/* Ambient glow behind the rings */
+.loader-glow {
+  position: absolute;
+  width: 320px; height: 320px;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  background: radial-gradient(circle, rgba(179,146,86,0.08) 0%, transparent 70%);
+  animation: glowPulse 3s ease-in-out infinite;
 }
-@keyframes spin {
-  to { transform: rotate(360deg); }
+@keyframes glowPulse {
+  0%,100% { transform: scale(1); opacity: 0.6; }
+  50%      { transform: scale(1.15); opacity: 1; }
+}
+
+/* ── Wedding rings SVG container */
+.loader-rings {
+  width: 90px; height: 55px;
+  position: relative;
+  margin-bottom: 36px;
+  animation: ringFloat 4s ease-in-out infinite;
+}
+@keyframes ringFloat {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+/* Ring shapes drawn in pure CSS */
+.ring {
+  position: absolute;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  border: 2.5px solid transparent;
+  animation: ringAppear 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  opacity: 0;
+}
+.ring-left {
+  left: 0; top: 0;
+  border-color: var(--dgold);
+  box-shadow: 0 0 16px rgba(179,146,86,0.35), inset 0 0 8px rgba(179,146,86,0.08);
+  animation-delay: 0.2s;
+}
+.ring-right {
+  right: 0; top: 0;
+  border-color: #8da5a3;
+  box-shadow: 0 0 16px rgba(108,135,133,0.35), inset 0 0 8px rgba(108,135,133,0.08);
+  animation-delay: 0.55s;
+}
+@keyframes ringAppear {
+  from { opacity: 0; transform: scale(0.6) rotate(-30deg); }
+  to   { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+/* Tiny shimmer orbiting the rings */
+.ring-shimmer {
+  position: absolute;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--dgold);
+  box-shadow: 0 0 8px 2px rgba(179,146,86,0.8);
+  animation: orbit 3s linear infinite;
+  animation-delay: 1.2s;
+  opacity: 0;
+}
+@keyframes orbit {
+  0%   { opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { opacity: 0; transform: rotate(360deg) translateX(55px); }
+}
+
+/* ── Loader title text */
+.loader-title {
+  font-family: 'Sacramento', cursive;
+  font-size: clamp(2.2rem, 8vw, 3rem);
+  color: var(--dgold);
+  letter-spacing: 0.04em;
+  text-align: center;
+  line-height: 1.1;
+  margin-bottom: 6px;
+  opacity: 0;
+  animation: titleReveal 1s cubic-bezier(0.22, 1, 0.36, 1) 0.8s forwards;
+  text-shadow: 0 0 40px rgba(179,146,86,0.4);
+}
+@keyframes titleReveal {
+  from { opacity: 0; transform: translateY(12px) scale(0.97); filter: blur(6px); }
+  to   { opacity: 1; transform: translateY(0)   scale(1);    filter: blur(0); }
+}
+
+.loader-ampersand {
+  display: inline-block;
+  color: #8da5a3;
+  margin: 0 0.15em;
+}
+
+.loader-date {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(0.55rem, 2vw, 0.7rem);
+  color: rgba(179,146,86,0.65);
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  text-align: center;
+  opacity: 0;
+  animation: titleReveal 1s ease 1.3s forwards;
+}
+
+/* Horizontal hair line under date */
+.loader-rule {
+  width: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--dgold), transparent);
+  margin: 14px auto 0;
+  animation: lineExpand 1s ease 1.1s forwards;
+}
+@keyframes lineExpand {
+  from { width: 0; opacity: 0; }
+  to   { width: 120px; opacity: 1; }
+}
+
+/* Floating particles */
+.loader-particles {
+  position: absolute;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  top: 0; left: 0;
+}
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--dgold);
+  opacity: 0;
+  animation: particleDrift var(--dur, 6s) ease-in-out var(--delay, 0s) infinite;
+}
+@keyframes particleDrift {
+  0%   { opacity: 0; transform: translateY(0) scale(0); }
+  15%  { opacity: var(--op, 0.4); transform: translateY(-20px) scale(1); }
+  85%  { opacity: var(--op, 0.4); transform: translateY(-80px) scale(0.8); }
+  100% { opacity: 0; transform: translateY(-110px) scale(0); }
+}
+
+/* Subtle scanline texture on loader */
+#loader::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.04) 2px,
+    rgba(0,0,0,0.04) 4px
+  );
+  pointer-events: none;
 }
 
 /* ── PAGE WRAPPER ────────────────────────── */
@@ -83,15 +237,17 @@ body{
   width: min(100vw, 430px);
   height: calc(min(100vw, 430px) * 7.2993);
   position:relative;
-  background: url('https://drive.google.com/thumbnail?id=1K-kEhHZ_ACj-9RT-l-gGMKASr68RkRvA&sz=w2000') top center / 100% 100% no-repeat;
+  background: url('https://drive.google.com/thumbnail?id=15k8W30sUdb9WZsDB955SToc-EkqX5hhM&sz=w2000') top center / 100% 100% no-repeat;
   overflow:hidden;
   display:flex;
   flex-direction:column;
   opacity: 0;
-  transition: opacity 1.5s ease;
+  transform: scale(0.99);
+  transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1), transform 1.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .page.loaded {
   opacity: 1;
+  transform: scale(1);
 }
 
 /* ── BANDS ───────────────────────────────── */
@@ -106,12 +262,12 @@ body{
   flex-shrink:0;
 }
 
-#b1{ height: 49.7%; justify-content: flex-start; padding-top: 54%; }
-#quote-band { padding: 2% 8%; margin-top: 17%; margin-bottom: 15%; } 
-#b2{ padding: 2% 8%; margin-bottom: 6%; } 
-#b3{ padding: 2% 8%; margin-bottom: 6%; } 
-#b4{ padding: 2% 8%; margin-bottom: 35%; }
-#b5{ margin-top: auto; padding-bottom: 25%; }
+#b1{ height: 37%; justify-content: flex-start; padding-top: 40%; }
+#quote-band { padding: 2% 8%; margin-top: 17%; margin-bottom: 10%; }
+#b2{ padding: 2% 30%; margin-bottom: 30%; }
+#b3{ padding: 2% 30%; margin-bottom: 80%; }
+#b4{ padding: 2% 25%; margin-bottom: 34%; }
+#b5{ margin-top: 28% auto; padding-bottom: 60%; }
 
 /* ── TEXT HELPERS ──────────────────────── */
 .on-light{ text-shadow: 1px 2px 4px rgba(59,51,43,0.4); }
@@ -126,7 +282,9 @@ body{
 .rule::after{
   content:'✦'; position:absolute; top:50%; left:50%;
   transform:translate(-50%,-50%);
-  font-size:0.5rem; color:var(--dgold); padding:0 6px;
+  font-size:0.5rem;
+  color:var(--dgold);
+  padding:0 6px;
 }
 .rule-names {
   margin: var(--space-around-names) auto;
@@ -135,51 +293,54 @@ body{
 /* ── MICRO LABEL ───────────────────────── */
 .lbl{
   font-family:'Cinzel',serif;
-  font-size:clamp(0.7rem,3.5vw,1rem);
+  font-size:clamp(0.7rem,2vw,1rem);
+  color:var(--ink);
   letter-spacing:0.5em; text-transform:uppercase;
-  color:var(--ink); opacity:0.8;
+  opacity:0.8;
 }
 
 /* ═══════════════════════════════════════
    BAND 1 — INVITATION
 ═══════════════════════════════════════ */
 .pre-text{
-  font-family:'EB Garamond',serif; 
+  font-family:'EB Garamond',serif;
+  font-size: var(--size-pre-text);
+  line-height: var(--lh-pre-text);
+  color:var(--ink);
   font-style:italic;
-  font-size:clamp(0.95rem, 4vw, 1.25rem);
   font-weight: 500;
-  color:var(--ink); 
-  letter-spacing:0.08em; 
-  line-height:1.6;
-  margin-bottom: var(--space-below-pre-text); /* Powered by CSS variable */
+  letter-spacing:0.08em;
+  margin-bottom: var(--space-below-pre-text);
 }
 .name-big{
-  font-family:'Sacramento',cursive;
-  font-size:clamp(2.6rem, 11vw, 4rem);
-  color:var(--roseDark); 
-  line-height:1.1;
+  font-family: var(--font-name-big);
+  font-size: var(--size-name-big);
+  line-height: var(--lh-name-big);
+  color: var(--color-name-big);
   text-align: center;
 }
 
 /* Stacked Date Style */
 .date-stack {
-  margin-top: var(--space-above-date); /* Powered by CSS variable */
+  margin-top: var(--space-above-date);
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 .ds-line1 {
   font-family: 'EB Garamond', serif;
-  font-style: italic;
-  font-size: clamp(1.4rem, 6vw, 1.8rem);
+  font-size: var(--size-date-line1);
+  line-height: var(--lh-date-line1);
   color: var(--ink);
+  font-style: italic;
   margin-bottom: 4px;
 }
 .ds-year {
   font-family: 'Cinzel', serif;
-  font-size: clamp(0.8rem, 3.5vw, 1rem);
-  letter-spacing: 0.4em;
+  font-size: var(--size-date-year);
+  line-height: var(--lh-date-year);
   color: var(--ink);
+  letter-spacing: 0.4em;
   margin-top: 2px;
 }
 
@@ -187,10 +348,10 @@ body{
    QUOTE SECTION
 ═══════════════════════════════════════ */
 .quote-text{
-  font-family:'EB Garamond',serif; 
+  font-family:'EB Garamond',serif;
+  font-size:clamp(1.1rem, 4.5vw, 1.3rem);
+  color:var(--ink);
   font-style:italic;
-  font-size:clamp(1.1rem, 4.5vw, 1.4rem);
-  color:var(--ink); 
   line-height:1.6;
   margin-bottom:15px;
   padding: 0 4%;
@@ -211,19 +372,24 @@ body{
   text-shadow: 1px 2px 4px rgba(59,51,43,0.4);
 }
 .v-time{
-  font-family:'Cinzel',serif; font-weight:600;
-  font-size: var(--size-venue-time); /* Powered by CSS variable */
-  color:var(--ink); line-height:1; margin-bottom:1px;
+  font-family:'Cinzel',serif;
+  font-size: var(--size-venue-time);
+  color:var(--ink);
+  font-weight:600;
+  line-height:1; margin-bottom:1px;
 }
 .v-event{
   font-family:'Sacramento',cursive;
-  font-size: var(--size-venue-event); /* Powered by CSS variable */
-  color:var(--roseDark); margin-bottom:2px; line-height:1.1;
+  font-size: var(--size-venue-event);
+  color:var(--roseDark);
+  margin-bottom:2px; line-height:1.1;
 }
 .v-where{
-  font-family:'EB Garamond',serif; font-style:italic;
-  font-size: var(--size-venue-where); /* Powered by CSS variable */
-  color:var(--ink); line-height:1.7; margin-bottom:6px;
+  font-family:'EB Garamond',serif;
+  font-size: var(--size-venue-where);
+  color:var(--ink);
+  font-style:italic;
+  line-height:1.7; margin-bottom:6px;
 }
 
 /* ── LOCATION BUTTONS ── */
@@ -232,13 +398,13 @@ body{
   margin-top:5px;
 }
 .loc-btn{
+  font-family:'Cinzel',serif;
+  font-size:clamp(0.65rem,3vw,0.9rem);
+  color:var(--ink);
   display:inline-flex; align-items:center; gap:4px;
   padding:8px 18px;
   background:rgba(255,255,255,0.25);
   border:1px solid var(--dgold);
-  color:var(--ink);
-  font-family:'Cinzel',serif;
-  font-size:clamp(0.65rem,3vw,0.9rem);
   letter-spacing:0.2em; text-transform:uppercase;
   text-decoration:none; cursor:pointer;
   transition:all 0.25s;
@@ -254,27 +420,40 @@ body{
 ═══════════════════════════════════════ */
 .waiting{
   font-family:'Sacramento',cursive;
-  font-size: var(--size-waiting); /* Powered by CSS variable */
-  color:var(--ink); line-height:1.2;
+  font-size: var(--size-waiting);
+  color:var(--ink);
+  line-height:1.2;
   margin-bottom:6px;
 }
 .rsvp-trigger{
+  font-family: 'Cinzel', serif;
+  font-size: clamp(0.9rem, 4vw, 1.2rem);
+  color: var(--ink);
   background: rgba(255,255,255,0.15);
   border: 1px solid var(--dgold);
   padding: 12px 40px;
-  font-family: 'Cinzel', serif;
-  font-size: clamp(0.9rem, 4vw, 1.2rem);
   letter-spacing: 0.3em;
-  color: var(--ink);
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
 }
+.rsvp-trigger::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+.rsvp-trigger:hover::before { transform: translateX(100%); }
 .rsvp-trigger:hover {
   background: var(--dgold);
   color: #fff;
+  box-shadow: 0 4px 20px rgba(179,146,86,0.4);
 }
 
 /* ═══════════════════════════════════════
@@ -285,10 +464,11 @@ body{
   background: rgba(0,0,0,0.6); z-index: 200;
   display: none; align-items: center; justify-content: center;
   opacity: 0; transition: opacity 0.3s ease;
+  backdrop-filter: blur(4px);
 }
 .modal-overlay.active { display: flex; opacity: 1; }
 .modal-content {
-  background: #fcf8f0; 
+  background: #fcf8f0;
   width: 90%; max-width: 360px;
   padding: 35px 25px;
   border: 1px solid rgba(184,150,90,0.5);
@@ -299,32 +479,42 @@ body{
 }
 .modal-overlay.active .modal-content { transform: translateY(0); }
 .modal-close {
+  color: var(--dgold);
+  font-size: 1.8rem;
+  font-family: sans-serif;
   position: absolute; top: 15px; right: 15px;
-  background: none; border: none; font-size: 1.8rem;
-  color: var(--dgold); cursor: pointer; line-height: 1;
-  font-family: sans-serif; font-weight: 300;
+  background: none; border: none; cursor: pointer; line-height: 1;
+  font-weight: 300;
 }
 .m-title {
-  font-family: 'Cinzel', serif; font-size: 1.4rem;
-  letter-spacing: 0.3em; text-align: center; color: var(--ink);
+  font-family: 'Cinzel', serif;
+  font-size: 1.4rem;
+  color: var(--ink);
+  letter-spacing: 0.3em; text-align: center;
   margin-bottom: 5px;
 }
 .m-sub {
-  font-family: 'EB Garamond', serif; font-style: italic;
-  text-align: center; color: var(--dgold); margin-bottom: 25px;
+  font-family: 'EB Garamond', serif;
   font-size: 1rem;
+  color: var(--dgold);
+  font-style: italic;
+  text-align: center; margin-bottom: 25px;
 }
 .m-fg { margin-bottom: 20px; text-align: left; }
 .m-fg label {
-  font-family: 'Cinzel', serif; font-size: 0.55rem;
-  letter-spacing: 0.25em; color: var(--dgold);
+  font-family: 'Cinzel', serif;
+  font-size: 0.55rem;
+  color: var(--dgold);
+  letter-spacing: 0.25em;
   display: block; margin-bottom: 8px; text-transform: uppercase;
 }
 .m-fg input, .m-fg select, .m-fg textarea {
+  font-family: 'EB Garamond', serif;
+  font-size: 1rem;
+  color: var(--ink);
   width: 100%; background: transparent;
   border: none; border-bottom: 1px solid var(--dgold);
-  color: var(--ink); font-family: 'EB Garamond', serif;
-  font-size: 1rem; padding: 5px 0 8px 0; outline: none;
+  padding: 5px 0 8px 0; outline: none;
 }
 .m-fg input::placeholder, .m-fg textarea::placeholder {
   color: #a09d94;
@@ -336,9 +526,12 @@ body{
 }
 .m-fg textarea { resize: none; min-height: 30px; }
 .m-submit {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  color: #fff;
+  background: #b39256;
   width: 100%; padding: 14px; margin-top: 10px;
-  background: #b39256; color: #fff; border: none;
-  font-family: 'Cinzel', serif; font-size: 0.75rem;
+  border: none;
   letter-spacing: 0.25em; text-transform: uppercase;
   cursor: pointer; transition: opacity 0.3s;
 }
@@ -348,37 +541,149 @@ body{
    BAND 5 — CLOSING
 ═══════════════════════════════════════ */
 .closing-love{
-  font-family:'EB Garamond',serif; font-style:italic;
-  font-size: var(--size-closing-love); /* Powered by CSS variable */
-  letter-spacing:0.2em; color:var(--ink);
+  font-family:'EB Garamond',serif;
+  font-size: var(--size-closing-love);
+  color:var(--ink);
+  font-style:italic;
+  letter-spacing:0.2em;
   margin-bottom:-6px;
 }
 .closing-names{
   font-family:'Sacramento',cursive;
-  font-size: var(--size-closing-names); /* Powered by CSS variable */
-  color:var(--roseDark); line-height:0.9;
+  font-size: var(--size-closing-names);
+  color:var(--roseDark);
+  line-height:0.9;
 }
 .hearts{
   font-family:'Sacramento',cursive;
   font-size:clamp(0.8rem,3vw,1.2rem);
-  color:#84A385; margin:-4px 0 2px 0;
+  color:#84A385;
+  margin:-4px 0 2px 0;
 }
 .closing-date{
   font-family:'Cinzel',serif;
   font-size:clamp(0.38rem,1.4vw,0.52rem);
-  letter-spacing:0.4em; color:#000000; opacity:1;
+  color:#000000;
+  letter-spacing:0.4em; opacity:1;
   margin-top:2px; text-shadow:none;
 }
 
-/* ── ANIMATIONS ─────────────────────────── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
-.ani{opacity:0;animation:fadeUp 1s ease forwards;}
-.ani-1{animation-delay:0.3s;}
-.ani-2{animation-delay:0.7s;}
-.ani-3{animation-delay:1.1s;}
+/* ══════════════════════════════════════════════════════
+   ✦ IMPROVED ANIMATIONS
+══════════════════════════════════════════════════════ */
 
-.rev{opacity:0;transform:translateY(16px);transition:opacity 0.75s,transform 0.75s;}
-.rev.on{opacity:1;transform:none;}
+/* ── Band 1: cinematic entrance with stagger */
+@keyframes luxFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes luxScaleIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+    filter: blur(3px);
+    letter-spacing: 0.12em;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+    letter-spacing: inherit;
+  }
+}
+
+@keyframes ruleExpand {
+  from { width: 0; opacity: 0; }
+  to   { width: 60%; opacity: 1; }
+}
+
+/* Name gets a golden shimmer sweep after appearing */
+@keyframes shimmerSweep {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.ani { opacity: 0; }
+
+.ani-name {
+  animation: luxScaleIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+}
+.ani-rule-top {
+  animation: ruleExpand 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1.2s forwards;
+  width: 0 !important;
+}
+.ani-pre {
+  animation: luxFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 1.6s forwards;
+}
+.ani-rule-bot {
+  animation: ruleExpand 0.9s cubic-bezier(0.22, 1, 0.36, 1) 2s forwards;
+  width: 0 !important;
+}
+.ani-date {
+  animation: luxFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 2.2s forwards;
+}
+
+/* Shimmer on the name after load */
+.name-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--roseDark) 0%,
+    var(--roseDark) 35%,
+    #a8c5c3 50%,
+    var(--roseDark) 65%,
+    var(--roseDark) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmerSweep 3.5s linear 2.5s infinite;
+}
+
+/* ── Scroll reveal — upgraded */
+.rev {
+  opacity: 0;
+  transform: translateY(24px);
+  filter: blur(2px);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.rev.on {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* Stagger children inside revealed containers */
+.rev-group { }
+.rev-group .rev:nth-child(1) { transition-delay: 0s; }
+.rev-group .rev:nth-child(2) { transition-delay: 0.12s; }
+.rev-group .rev:nth-child(3) { transition-delay: 0.24s; }
+.rev-group .rev:nth-child(4) { transition-delay: 0.36s; }
+
+/* Scale-in variant for special elements */
+.rev-scale {
+  opacity: 0;
+  transform: scale(0.94) translateY(16px);
+  transition:
+    opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.rev-scale.on {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
 
 /* ── SCROLLBAR (subtle) ─── */
 ::-webkit-scrollbar{width:3px;}
@@ -403,13 +708,14 @@ body{
   align-items: center;
   justify-content: center;
   backdrop-filter: blur(6px);
-  transition: background 0.25s, transform 0.25s;
+  transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
   box-shadow: 0 2px 12px rgba(0,0,0,0.25);
 }
 #musicBtn:hover {
   background: var(--dgold);
   color: #fff;
   transform: scale(1.08);
+  box-shadow: 0 4px 20px rgba(179,146,86,0.5);
 }
 #musicBtn .music-note {
   display: inline-block;
@@ -419,18 +725,42 @@ body{
   animation: noteBounce 1.2s ease-in-out infinite;
 }
 @keyframes noteBounce {
-  0%,100% { transform: translateY(0); }
-  50%      { transform: translateY(-3px); }
+  0%,100% { transform: translateY(0) rotate(-5deg); }
+  50%      { transform: translateY(-4px) rotate(5deg); }
 }
 </style>
 </head>
 <body>
 
 <!-- ══════════════════════════════════════
-     LOADING SCREEN
+     ✦ CINEMATIC LOADING SCREEN
 ══════════════════════════════════════ -->
 <div id="loader">
-  <div class="spinner"></div>
+
+  <!-- Ambient particles -->
+  <div class="loader-particles" id="loaderParticles"></div>
+
+  <!-- Glow orb -->
+  <div class="loader-glow"></div>
+
+  <!-- Wedding rings -->
+  <div class="loader-rings">
+    <div class="ring ring-left"></div>
+    <div class="ring ring-right"></div>
+    <div class="ring-shimmer"></div>
+  </div>
+
+  <!-- Names -->
+  <div class="loader-title">
+    Teresa <span class="loader-ampersand">&amp;</span> Claudio
+  </div>
+
+  <!-- Rule line -->
+  <div class="loader-rule"></div>
+
+  <!-- Date -->
+  <div class="loader-date">16 · MAY · 2026 · Cairo</div>
+
 </div>
 
 <!-- ══════════════════════════════════════
@@ -443,37 +773,35 @@ body{
        └────────────────────────────────── -->
   <div id="b1" class="band">
 
-    <p class="pre-text on-light ani ani-1">
-      Together with their families request the honour of your presence
-    </p>
-
-    <!-- Swapped inline styles for the CSS variable class -->
-    <div class="rule rule-names on-light"></div>
-
-    <div class="ani ani-2">
-      <div class="name-big on-light">Teresa &amp; Claudio</div>
+    <div class="ani ani-name">
+      <div class="name-big name-shimmer on-light">Teresa &amp; Claudio</div>
     </div>
 
-    <!-- Swapped inline styles for the CSS variable class -->
-    <div class="rule rule-names"></div>
+    <div class="rule rule-names on-light ani ani-rule-top"></div>
 
-    <div class="date-stack ani ani-3">
-      <div class="ds-line1 on-light">On Monday the 16th of March</div>
-      <div class="ds-year on-light">2026</div>
+    <p class="pre-text on-light ani ani-pre">
+      REQUEST THE PLEASURE <br>OF YOUR COMPANY <br>AT THEIR WEDDING <br>CELEBRATION
+    </p>
+
+    <div class="rule rule-names ani ani-rule-bot"></div>
+
+    <div class="date-stack ani ani-date">
+      <div class="ds-line1 on-light"></br>On Saturday </br></br>    The 16th of May</div>
+      <div class="ds-year on-light"></br>2026</div>
     </div>
 
   </div><!-- END BAND 1 -->
 
 
   <!-- ┌──────────────────────────────────
-       │  QUOTE SECTION 
+       │  QUOTE SECTION
        └────────────────────────────────── -->
   <div id="quote-band" class="band">
 
     <div class="quote-text rev on-light">
-      "Being deeply loved by someone gives you strength, while loving someone deeply gives you courage."
+      "Being deeply loved by someone <p>gives you strength, <p>while loving someone deeply <p>gives you courage."
     </div>
-    <div class="rule rev" style="width:30%;margin:0 auto;"></div>
+    <div class="rule rev" style="width:10%;margin:0 auto;"></div>
 
   </div><!-- END QUOTE -->
 
@@ -483,7 +811,7 @@ body{
        └────────────────────────────────── -->
   <div id="b2" class="band">
 
-    <div class="lbl rev on-light" style="margin-bottom:6px;">First · The Church Ceremony</div>
+    <div class="lbl rev on-light" style="margin-bottom:6px;">The Church Ceremony</div>
 
     <div class="venue-pill rev">
       <div class="v-time">3:00 PM</div>
@@ -509,7 +837,7 @@ body{
        └────────────────────────────────── -->
   <div id="b3" class="band">
 
-    <div class="lbl rev on-light" style="margin-bottom:6px;">Then · The Wedding Reception</div>
+    <div class="lbl rev on-light" style="margin-bottom:6px;">The Wedding Reception</div>
 
     <div class="venue-pill rev">
       <div class="v-time">5:00 PM</div>
@@ -536,7 +864,7 @@ body{
   <div id="b4" class="band">
 
     <p class="waiting on-light rev">We are waiting for you…</p>
-    
+
     <div class="rev" style="margin-top: 15px;">
       <button class="rsvp-trigger" onclick="openRSVP()">R S V P</button>
     </div>
@@ -549,14 +877,14 @@ body{
        └────────────────────────────────── -->
   <div id="b5" class="band">
 
-    <div class="rule" style="width:55%;margin:0 auto 8px;"></div>
+    <div class="rule" style="width:20%;margin:0 auto 8px;"></div>
 
     <div class="rev">
-      <p class="closing-love on-light">With all our love,</p>
+      <p class="closing-love on-light">With all our love</br>,</p>
       <div class="closing-names on-light">Teresa &amp; Claudio</div>
       <div class="hearts">♡ &nbsp; ♡ &nbsp; ♡</div>
-      <div class="rule" style="width:55%;margin:2px auto;"></div>
-      <p class="closing-date">16 · March · 2026 · Cairo, Egypt</p>
+      <div class="rule" style="width:20%;margin:2px auto;"></div>
+      <p class="closing-date"></br>16 · March · 2026 · Cairo, Egypt</p>
     </div>
 
   </div><!-- END BAND 5 -->
@@ -567,16 +895,16 @@ body{
   <div id="rsvpModal" class="modal-overlay">
     <div class="modal-content">
       <button class="modal-close" onclick="closeRSVP()">✕</button>
-      
+
       <div id="modalForm">
         <h2 class="m-title">R S V P</h2>
         <p class="m-sub">Kindly reply by March 2nd, 2026</p>
-        
+
         <div class="m-fg">
           <label>Full Name *</label>
           <input type="text" id="mName" placeholder="Your full name">
         </div>
-        
+
         <div class="m-fg">
           <label>Will you be attending?</label>
           <select id="mAtt">
@@ -584,7 +912,7 @@ body{
             <option value="no">Regretfully declines</option>
           </select>
         </div>
-        
+
         <div class="m-fg">
           <label>Number of guests</label>
           <select id="mGuests">
@@ -604,18 +932,18 @@ body{
             <option value="reception">Reception Only</option>
           </select>
         </div>
-        
+
         <div class="m-fg">
           <label>Leave a message for the couple 💌</label>
           <textarea id="mMsg" rows="1" placeholder="Write your warm wishes here..."></textarea>
         </div>
-        
+
         <button class="m-submit" onclick="submitRSVPModal()">SEND MY RESPONSE</button>
       </div>
 
       <div id="modalSuccess" style="display:none; text-align:center; padding: 40px 0;">
         <h3 style="font-family:'Cinzel'; color:var(--dgold); margin-bottom:10px;">Thank You ✦</h3>
-        <p style="font-family:'EB Garamond'; font-style:italic; color:var(--ink);">Your response has been successfully sent.</p>
+        <p style="font-family:'EB Garamond'; color:var(--ink); font-style:italic;">Your response has been successfully sent.</p>
       </div>
 
     </div>
@@ -635,6 +963,28 @@ body{
 </button>
 
 <script>
+// ── LOADER PARTICLES ──────────────────────────────
+(function spawnParticles() {
+  const container = document.getElementById('loaderParticles');
+  const count = 18;
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 3 + 1.5;
+    const x = Math.random() * 100;
+    const y = Math.random() * 100;
+    const dur = (Math.random() * 4 + 5).toFixed(1);
+    const delay = (Math.random() * 6).toFixed(1);
+    const op = (Math.random() * 0.3 + 0.15).toFixed(2);
+    p.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${x}%; top:${y}%;
+      --dur:${dur}s; --delay:${delay}s; --op:${op};
+    `;
+    container.appendChild(p);
+  }
+})();
+
 // ── MUSIC LOGIC ──────────────────────────────────
 const music = document.getElementById('bgMusic');
 const musicBtn = document.getElementById('musicBtn');
@@ -651,15 +1001,12 @@ function toggleMusic() {
   }
 }
 
-// Auto-play after user first interacts with the page
 function tryAutoplay() {
   music.volume = 0.5;
   music.play().then(() => {
     musicBtn.classList.add('playing');
     musicBtn.title = 'Pause music';
-  }).catch(() => {
-    // Autoplay blocked — button still works on click
-  });
+  }).catch(() => {});
   document.removeEventListener('click', tryAutoplay);
   document.removeEventListener('touchstart', tryAutoplay);
 }
@@ -667,33 +1014,41 @@ document.addEventListener('click', tryAutoplay);
 document.addEventListener('touchstart', tryAutoplay);
 
 // ── LOADER LOGIC ──────────────────────────────────
-// Wait for everything (including images and fonts) to load
 window.addEventListener('load', function() {
   const loader = document.getElementById('loader');
-  const page = document.getElementById('mainPage');
-  
-  // Start fading out the loader
-  loader.style.opacity = '0';
-  
-  setTimeout(() => {
-    // Hide the loader completely
-    loader.style.display = 'none';
-    // Trigger the page fade-in
-    page.classList.add('loaded');
-  }, 800); // 800ms matches the CSS transition time
+  const page   = document.getElementById('mainPage');
+
+  // Give loader a minimum display time for the cinema experience
+  const minDisplay = 2400; // ms — lets all loader animations play
+  const startTime  = performance.now();
+
+  function dismissLoader() {
+    const elapsed = performance.now() - startTime;
+    const remaining = Math.max(0, minDisplay - elapsed);
+
+    setTimeout(() => {
+      loader.style.opacity = '0';
+      setTimeout(() => {
+        loader.style.display = 'none';
+        page.classList.add('loaded');
+      }, 1200);
+    }, remaining);
+  }
+
+  dismissLoader();
 });
 
-// Fallback in case load event fails or takes unusually long (e.g., slow network)
+// Fallback
 setTimeout(() => {
   const loader = document.getElementById('loader');
-  if(loader && loader.style.display !== 'none') {
+  if (loader && loader.style.display !== 'none') {
     loader.style.opacity = '0';
     setTimeout(() => {
       loader.style.display = 'none';
       document.getElementById('mainPage').classList.add('loaded');
-    }, 800);
+    }, 1200);
   }
-}, 5000); // 5 seconds max wait
+}, 7000);
 
 // ── RSVP MODAL LOGIC ──────────────────────────────
 function openRSVP() {
@@ -701,7 +1056,6 @@ function openRSVP() {
 }
 function closeRSVP() {
   document.getElementById('rsvpModal').classList.remove('active');
-  // Optional: reset form state after closing
   setTimeout(() => {
     document.getElementById('modalForm').style.display = 'block';
     document.getElementById('modalSuccess').style.display = 'none';
@@ -709,19 +1063,33 @@ function closeRSVP() {
 }
 function submitRSVPModal() {
   const n = document.getElementById('mName').value.trim();
-  if(!n) { alert('Please enter your full name.'); return; }
-  
-  // Show success message inside modal
+  if (!n) { alert('Please enter your full name.'); return; }
   document.getElementById('modalForm').style.display = 'none';
   document.getElementById('modalSuccess').style.display = 'block';
 }
 
-// ── SCROLL REVEAL ─────────────────────────────────
-const io=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target);}}
-  );
-},{threshold:0.08});
-document.querySelectorAll('.rev').forEach(el=>io.observe(el));
+// ── SCROLL REVEAL — enhanced with stagger ─────────
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const el = e.target;
+      const delay = el.dataset.delay || 0;
+      setTimeout(() => {
+        el.classList.add('on');
+      }, delay);
+      io.unobserve(el);
+    }
+  });
+}, { threshold: 0.1 });
+
+// Add staggered delays to siblings within the same parent
+document.querySelectorAll('.rev').forEach((el, idx) => {
+  // Check if siblings exist in same band
+  const siblings = Array.from(el.parentElement.querySelectorAll('.rev'));
+  const sibIdx = siblings.indexOf(el);
+  el.dataset.delay = sibIdx * 120;
+  io.observe(el);
+});
 </script>
 </body>
 </html>
