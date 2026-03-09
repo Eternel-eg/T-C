@@ -708,12 +708,16 @@ body{
       <div class="ds-year on-light">2026</div>
     </div>
 
-  </div><div id="quote-band" class="band">
+  </div>
+  
+  <div id="quote-band" class="band">
     <div class="quote-text rev on-light">
       "Being deeply loved by someone <br>gives you strength, <br>while loving someone deeply <br>gives you courage."
     </div>
     <div class="rule rev" style="width:10%;margin:0 auto;"></div>
-  </div><div id="b2" class="band">
+  </div>
+  
+  <div id="b2" class="band">
 
     <div class="lbl rev on-light" style="margin-bottom:6px;">The Church<br>Ceremony</div>
 
@@ -729,7 +733,9 @@ body{
       </div>
     </div>
 
-  </div><div id="b3" class="band">
+  </div>
+  
+  <div id="b3" class="band">
 
     <div class="lbl rev on-light" style="margin-bottom:6px;">The Wedding Reception</div>
 
@@ -745,7 +751,9 @@ body{
       </div>
     </div>
 
-  </div><div id="b4" class="band">
+  </div>
+  
+  <div id="b4" class="band">
 
     <p class="waiting on-light rev"></br></br>We are waiting for you…</p>
 
@@ -753,7 +761,9 @@ body{
       <button class="rsvp-trigger" onclick="openRSVP()">R S V P</button>
     </div>
 
-  </div><div id="b5" class="band">
+  </div>
+  
+  <div id="b5" class="band">
 
     <div class="rule" style="width:20%;margin:0 auto 8px;"></div>
 
@@ -761,67 +771,74 @@ body{
       <p class="closing-love on-light">With all our love,</p>
       <div class="closing-names on-light"></br>Teresa & Claudio</div>
       <div class="rule" style="width:20%;margin:2px auto;"></div>
-      <p class="closing-date">16 · March · 2026 · Cairo, Egypt</p>
+      <p class="closing-date">16 · MAY · 2026 · Cairo, Egypt</p>
     </div>
 
-  </div><div id="rsvpModal" class="modal-overlay">
-    <div class="modal-content">
-      <button class="modal-close" onclick="closeRSVP()">✕</button>
-
-      <div id="modalForm">
-        <h2 class="m-title">R S V P</h2>
-        <p class="m-sub">Kindly reply by March 2nd, 2026</p>
-
-        <div class="m-fg">
-          <label>Full Name *</label>
-          <input type="text" id="mName" placeholder="Your full name">
-        </div>
-
-        <div class="m-fg">
-          <label>Will you be attending?</label>
-          <select id="mAtt">
-            <option value="yes">Joyfully accepts</option>
-            <option value="no">Regretfully declines</option>
-          </select>
-        </div>
-
-        <div class="m-fg">
-          <label>Number of guests</label>
-          <select id="mGuests">
-            <option value="1">1 Guest</option>
-            <option value="2">2 Guests</option>
-            <option value="3">3 Guests</option>
-            <option value="4">4 Guests</option>
-            <option value="5">5 Guests</option>
-          </select>
-        </div>
-
-        <div class="m-fg">
-          <label>Which events will you attend?</label>
-          <select id="mEvents">
-            <option value="both">Both — Church & Reception</option>
-            <option value="church">Church Only</option>
-            <option value="reception">Reception Only</option>
-          </select>
-        </div>
-
-        <div class="m-fg">
-          <label>Leave a message for the couple 💌</label>
-          <textarea id="mMsg" rows="1" placeholder="Write your warm wishes here..."></textarea>
-        </div>
-
-        <button class="m-submit" onclick="submitRSVPModal()">SEND MY RESPONSE</button>
-      </div>
-
-      <div id="modalSuccess" style="display:none; text-align:center; padding: 40px 0;">
-        <h3 style="font-family:'Cinzel'; color:var(--dgold); margin-bottom:10px;">Thank You ✦</h3>
-        <p style="font-family:'EB Garamond'; color:var(--ink); font-style:italic;">Your response has been successfully sent.</p>
-      </div>
-
-    </div>
   </div>
 
-</div><audio id="bgMusic" loop>
+</div> <!-- END OF MAIN PAGE -->
+
+<!-- ═══════════════════════════════════════
+   RSVP MODAL (POPUP) - NOW OUTSIDE .page
+═══════════════════════════════════════ -->
+<div id="rsvpModal" class="modal-overlay">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeRSVP()">✕</button>
+
+    <div id="modalForm">
+      <h2 class="m-title">R S V P</h2>
+      <p class="m-sub">Kindly reply by MAY 2nd, 2026</p>
+
+      <div class="m-fg">
+        <label>Full Name *</label>
+        <input type="text" id="mName" placeholder="Your full name">
+      </div>
+
+      <div class="m-fg">
+        <label>Will you be attending?</label>
+        <select id="mAtt">
+          <option value="yes">Joyfully accepts</option>
+          <option value="no">Regretfully declines</option>
+        </select>
+      </div>
+
+      <div class="m-fg">
+        <label>Number of guests</label>
+        <select id="mGuests">
+          <option value="1">1 Guest</option>
+          <option value="2">2 Guests</option>
+          <option value="3">3 Guests</option>
+          <option value="4">4 Guests</option>
+          <option value="5">5 Guests</option>
+        </select>
+      </div>
+
+      <div class="m-fg">
+        <label>Which events will you attend?</label>
+        <select id="mEvents">
+          <option value="both">Both — Church & Reception</option>
+          <option value="church">Church Only</option>
+          <option value="reception">Reception Only</option>
+        </select>
+      </div>
+
+      <div class="m-fg">
+        <label>Leave a message for the couple 💌</label>
+        <textarea id="mMsg" rows="1" placeholder="Write your warm wishes here..."></textarea>
+      </div>
+
+      <button class="m-submit" onclick="submitRSVPModal()">SEND MY RESPONSE</button>
+    </div>
+
+    <div id="modalSuccess" style="display:none; text-align:center; padding: 40px 0;">
+      <h3 style="font-family:'Cinzel'; color:var(--dgold); margin-bottom:10px;">Thank You ✦</h3>
+      <p style="font-family:'EB Garamond'; color:var(--ink); font-style:italic;">Your response has been successfully sent.</p>
+    </div>
+
+  </div>
+</div>
+
+<audio id="bgMusic" loop>
   <source src="music.mp3" type="audio/mpeg">
 </audio>
 
