@@ -20,11 +20,14 @@
   --space-around-names: 15px;
 
   /* --- 2. OTHER SPACING & SIZES FOR THE UPPER PART (BAND 1) --- */
-  --space-below-pre-text: 8px;
-  --space-above-date: 1px;
-  --size-pre-text: clamp(1rem, 2vw, 0.6rem);
-  --size-date-line1: clamp(1rem, 6vw, 1.6rem);
-  --size-date-year: clamp(0.8rem, 3.5vw, 1rem);
+  --space-above-date: 5px;
+  --size-pre-text: clamp(0.7rem, 2vw, 0.6rem);
+  
+  /* INDEPENDENT DATE SIZES */
+  --size-date-day: clamp(1.2rem, 7vw, 1.4rem);   /* Controls "Saturday" */
+  --size-date-line1: clamp(1rem, 6vw, 1.7rem);   /* Controls "16th of May" */
+  --size-date-year: clamp(0.8rem, 3.5vw, 1rem);  /* Controls "2026" */
+  
   --lh-pre-text: 1.4;
   --lh-date-line1: 1.2;
   --lh-date-year: 1.2;
@@ -63,7 +66,7 @@ body{
 }
 
 /* ══════════════════════════════════════════════════════
-   ✦ CINEMATIC LOADER — REDESIGNED
+   ✦ CINEMATIC LOADER
 ══════════════════════════════════════════════════════ */
 #loader {
   position: fixed;
@@ -79,7 +82,6 @@ body{
   transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Ambient glow behind the rings */
 .loader-glow {
   position: absolute;
   width: 320px; height: 320px;
@@ -92,7 +94,6 @@ body{
   50%      { transform: scale(1.15); opacity: 1; }
 }
 
-/* ── Wedding rings SVG container */
 .loader-rings {
   width: 90px; height: 55px;
   position: relative;
@@ -104,7 +105,6 @@ body{
   50%      { transform: translateY(-6px); }
 }
 
-/* Ring shapes drawn in pure CSS */
 .ring {
   position: absolute;
   width: 52px; height: 52px;
@@ -130,7 +130,6 @@ body{
   to   { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 
-/* Tiny shimmer orbiting the rings */
 .ring-shimmer {
   position: absolute;
   width: 5px; height: 5px;
@@ -148,7 +147,6 @@ body{
   100% { opacity: 0; transform: rotate(360deg) translateX(55px); }
 }
 
-/* ── Loader title text */
 .loader-title {
   font-family: 'Sacramento', cursive;
   font-size: clamp(2.2rem, 8vw, 3rem);
@@ -181,9 +179,9 @@ body{
   text-align: center;
   opacity: 0;
   animation: titleReveal 1s ease 1.3s forwards;
+  margin-right: -0.5em; /* Fixes off-center issue caused by letter-spacing */
 }
 
-/* Horizontal hair line under date */
 .loader-rule {
   width: 0;
   height: 1px;
@@ -196,7 +194,6 @@ body{
   to   { width: 120px; opacity: 1; }
 }
 
-/* Floating particles */
 .loader-particles {
   position: absolute;
   width: 100%; height: 100%;
@@ -217,7 +214,6 @@ body{
   100% { opacity: 0; transform: translateY(-110px) scale(0); }
 }
 
-/* Subtle scanline texture on loader */
 #loader::after {
   content: '';
   position: absolute;
@@ -264,10 +260,10 @@ body{
 
 #b1{ height: 37%; justify-content: flex-start; padding-top: 40%; }
 #quote-band { padding: 2% 8%; margin-top: 17%; margin-bottom: 10%; }
-#b2{ padding: 2% 30%; margin-bottom: 35%; }
-#b3{ padding: 2% 30%; margin-bottom: 80%; }
-#b4{ padding: 2% 25%; margin-bottom: 50%; }
-#b5{ margin-top: 28% auto; padding-bottom: 60%; }
+#b2{ padding: 6% 20%; margin-bottom: 45%; }
+#b3{ padding: 2% 20%; margin-bottom: 65%; }
+#b4{ padding: 2% 25%; margin-bottom: 40%; }
+#b5{ margin-top: 28% auto; padding-bottom: 20%; }
 
 /* ── TEXT HELPERS ──────────────────────── */
 .on-light{ text-shadow: 1px 2px 4px rgba(59,51,43,0.4); }
@@ -296,6 +292,7 @@ body{
   font-size:clamp(0.7rem,2vw,1rem);
   color:var(--ink);
   letter-spacing:0.5em; text-transform:uppercase;
+  margin-right: -0.5em; /* Fixes centering issue from letter-spacing */
   opacity:0.8;
 }
 
@@ -303,14 +300,15 @@ body{
    BAND 1 — INVITATION
 ═══════════════════════════════════════ */
 .pre-text{
-  font-family:'EB Garamond',serif;
+  font-family:'Cinzel',serif;
   font-size: var(--size-pre-text);
   line-height: var(--lh-pre-text);
   color:var(--ink);
   font-style:italic;
   font-weight: 500;
   letter-spacing:0.08em;
-  margin-bottom: var(--space-below-pre-text);
+  margin: 0; /* Keeps perfectly centered between the rules */
+  padding: 5px 0;
 }
 .name-big{
   font-family: var(--font-name-big);
@@ -327,8 +325,16 @@ body{
   flex-direction: column;
   align-items: center;
 }
+.ds-day {
+  font-family: 'Cinzel', serif;
+  font-size: var(--size-date-day);
+  line-height: var(--lh-date-line1);
+  color: var(--ink);
+  font-style: italic;
+  margin-bottom: 4px;
+}
 .ds-line1 {
-  font-family: 'EB Garamond', serif;
+  font-family: 'Cinzel', serif;
   font-size: var(--size-date-line1);
   line-height: var(--lh-date-line1);
   color: var(--ink);
@@ -341,6 +347,7 @@ body{
   line-height: var(--lh-date-year);
   color: var(--ink);
   letter-spacing: 0.4em;
+  margin-right: -0.4em; /* Compensate for letter spacing */
   margin-top: 2px;
 }
 
@@ -392,7 +399,6 @@ body{
   line-height:1.7; margin-bottom:6px;
 }
 
-/* ── LOCATION BUTTONS ── */
 .loc-btns{
   display:flex; flex-wrap:wrap; gap:5px; justify-content:center;
   margin-top:5px;
@@ -554,51 +560,25 @@ body{
   color:var(--roseDark);
   line-height:0.9;
 }
-.hearts{
-  font-family:'Sacramento',cursive;
-  font-size:clamp(0.8rem,3vw,1.2rem);
-  color:#84A385;
-  margin:-4px 0 2px 0;
-}
 .closing-date{
   font-family:'Cinzel',serif;
   font-size:clamp(0.38rem,1.4vw,0.52rem);
   color:#000000;
   letter-spacing:0.4em; opacity:1;
-  margin-top:2px; text-shadow:none;
+  margin-top:8px; text-shadow:none;
 }
 
 /* ══════════════════════════════════════════════════════
    ✦ IMPROVED ANIMATIONS
 ══════════════════════════════════════════════════════ */
-
-/* ── Band 1: cinematic entrance with stagger */
 @keyframes luxFadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(22px);
-    filter: blur(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
+  from { opacity: 0; transform: translateY(22px); filter: blur(4px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
 }
 
 @keyframes luxScaleIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px) scale(0.96);
-    filter: blur(3px);
-    letter-spacing: 0.12em;
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
-    letter-spacing: inherit;
-  }
+  from { opacity: 0; transform: translateY(8px) scale(0.96); filter: blur(3px); letter-spacing: 0.12em; }
+  to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); letter-spacing: inherit; }
 }
 
 @keyframes ruleExpand {
@@ -606,33 +586,18 @@ body{
   to   { width: 60%; opacity: 1; }
 }
 
-/* Name gets a golden shimmer sweep after appearing */
 @keyframes shimmerSweep {
   0%   { background-position: -200% center; }
   100% { background-position: 200% center; }
 }
 
 .ani { opacity: 0; }
+.ani-name { animation: luxScaleIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards; }
+.ani-rule-top { animation: ruleExpand 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1.2s forwards; width: 0 !important; }
+.ani-pre { animation: luxFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 1.6s forwards; }
+.ani-rule-bot { animation: ruleExpand 0.9s cubic-bezier(0.22, 1, 0.36, 1) 2s forwards; width: 0 !important; }
+.ani-date { animation: luxFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 2.2s forwards; }
 
-.ani-name {
-  animation: luxScaleIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
-}
-.ani-rule-top {
-  animation: ruleExpand 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1.2s forwards;
-  width: 0 !important;
-}
-.ani-pre {
-  animation: luxFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 1.6s forwards;
-}
-.ani-rule-bot {
-  animation: ruleExpand 0.9s cubic-bezier(0.22, 1, 0.36, 1) 2s forwards;
-  width: 0 !important;
-}
-.ani-date {
-  animation: luxFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 2.2s forwards;
-}
-
-/* Shimmer on the name after load */
 .name-shimmer {
   background: linear-gradient(
     90deg,
@@ -649,169 +614,82 @@ body{
   animation: shimmerSweep 3.5s linear 2.5s infinite;
 }
 
-/* ── Scroll reveal — upgraded */
 .rev {
   opacity: 0;
   transform: translateY(24px);
   filter: blur(2px);
-  transition:
-    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.9s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.rev.on {
-  opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
-}
+.rev.on { opacity: 1; transform: translateY(0); filter: blur(0); }
 
-/* Stagger children inside revealed containers */
-.rev-group { }
-.rev-group .rev:nth-child(1) { transition-delay: 0s; }
-.rev-group .rev:nth-child(2) { transition-delay: 0.12s; }
-.rev-group .rev:nth-child(3) { transition-delay: 0.24s; }
-.rev-group .rev:nth-child(4) { transition-delay: 0.36s; }
-
-/* Scale-in variant for special elements */
-.rev-scale {
-  opacity: 0;
-  transform: scale(0.94) translateY(16px);
-  transition:
-    opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 1s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.rev-scale.on {
-  opacity: 1;
-  transform: scale(1) translateY(0);
-}
-
-/* ── SCROLLBAR (subtle) ─── */
+/* SCROLLBAR */
 ::-webkit-scrollbar{width:3px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--dgold);border-radius:3px;}
 
-/* ── MUSIC BUTTON ─── */
+/* MUSIC BUTTON */
 #musicBtn {
-  position: fixed;
-  bottom: 22px;
-  right: 22px;
-  z-index: 9998;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.18);
-  border: 1px solid var(--dgold);
-  color: var(--dgold);
-  font-size: 1.3rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(6px);
-  transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
+  position: fixed; bottom: 22px; right: 22px; z-index: 9998;
+  width: 48px; height: 48px; border-radius: 50%;
+  background: rgba(255,255,255,0.18); border: 1px solid var(--dgold);
+  color: var(--dgold); font-size: 1.3rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(6px); transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
   box-shadow: 0 2px 12px rgba(0,0,0,0.25);
 }
-#musicBtn:hover {
-  background: var(--dgold);
-  color: #fff;
-  transform: scale(1.08);
-  box-shadow: 0 4px 20px rgba(179,146,86,0.5);
-}
-#musicBtn .music-note {
-  display: inline-block;
-  transition: opacity 0.2s;
-}
-#musicBtn.playing .music-note {
-  animation: noteBounce 1.2s ease-in-out infinite;
-}
-@keyframes noteBounce {
-  0%,100% { transform: translateY(0) rotate(-5deg); }
-  50%      { transform: translateY(-4px) rotate(5deg); }
-}
+#musicBtn:hover { background: var(--dgold); color: #fff; transform: scale(1.08); box-shadow: 0 4px 20px rgba(179,146,86,0.5); }
+#musicBtn .music-note { display: inline-block; transition: opacity 0.2s; }
+#musicBtn.playing .music-note { animation: noteBounce 1.2s ease-in-out infinite; }
+@keyframes noteBounce { 0%,100% { transform: translateY(0) rotate(-5deg); } 50% { transform: translateY(-4px) rotate(5deg); } }
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════
-     ✦ CINEMATIC LOADING SCREEN
-══════════════════════════════════════ -->
 <div id="loader">
-
-  <!-- Ambient particles -->
   <div class="loader-particles" id="loaderParticles"></div>
-
-  <!-- Glow orb -->
   <div class="loader-glow"></div>
-
-  <!-- Wedding rings -->
   <div class="loader-rings">
     <div class="ring ring-left"></div>
     <div class="ring ring-right"></div>
     <div class="ring-shimmer"></div>
   </div>
-
-  <!-- Names -->
   <div class="loader-title">
-    Teresa <span class="loader-ampersand">&amp;</span> Claudio
+    Teresa <span class="loader-ampersand">&</span> Claudio
   </div>
-
-  <!-- Rule line -->
   <div class="loader-rule"></div>
-
-  <!-- Date -->
-  <div class="loader-date"></br>16 · MAY · 2026 · Cairo</div>
-
+  <div class="loader-date"><br>16 · MAY · 2026 · Cairo</div>
 </div>
 
-<!-- ══════════════════════════════════════
-     PAGE — image is the canvas
-══════════════════════════════════════ -->
 <div class="page" id="mainPage">
 
-  <!-- ┌──────────────────────────────────
-       │  BAND 1 · INVITATION TEXT
-       └────────────────────────────────── -->
   <div id="b1" class="band">
 
     <div class="ani ani-name">
-      <div class="name-big name-shimmer on-light">Teresa &amp; Claudio</div>
+      <div class="name-big name-shimmer on-light">Teresa & Claudio</div>
     </div>
 
     <div class="rule rule-names on-light ani ani-rule-top"></div>
 
     <p class="pre-text on-light ani ani-pre">
-      REQUEST THE PLEASURE <br>OF YOUR COMPANY <br>AT THEIR WEDDING <br>CELEBRATION
+      REQUEST THE PLEASURE <br>OF YOUR COMPANY <br>AT THEIR WEDDING CELEBRATION
     </p>
 
     <div class="rule rule-names ani ani-rule-bot"></div>
 
     <div class="date-stack ani ani-date">
-      <div class="ds-line1 on-light"></br>On Saturday </br></br>    The 16th of May</div>
-      <div class="ds-year on-light"></br>2026</div>
+      <div class="ds-day on-light"></br></br></br>Saturday</div>
+      <div class="ds-line1 on-light">16th of May</div>
+      <div class="ds-year on-light">2026</div>
     </div>
 
-  </div><!-- END BAND 1 -->
-
-
-  <!-- ┌──────────────────────────────────
-       │  QUOTE SECTION
-       └────────────────────────────────── -->
-  <div id="quote-band" class="band">
-
+  </div><div id="quote-band" class="band">
     <div class="quote-text rev on-light">
-      "Being deeply loved by someone <p>gives you strength, <p>while loving someone deeply <p>gives you courage."
+      "Being deeply loved by someone <br>gives you strength, <br>while loving someone deeply <br>gives you courage."
     </div>
     <div class="rule rev" style="width:10%;margin:0 auto;"></div>
+  </div><div id="b2" class="band">
 
-  </div><!-- END QUOTE -->
-
-
-  <!-- ┌──────────────────────────────────
-       │  BAND 2 · CHURCH CEREMONY
-       └────────────────────────────────── -->
-  <div id="b2" class="band">
-
-    <div class="lbl rev on-light" style="margin-bottom:6px;">The Church Ceremony</div>
+    <div class="lbl rev on-light" style="margin-bottom:6px;">The Church<br>Ceremony</div>
 
     <div class="venue-pill rev">
       <div class="v-time">3:00 PM</div>
@@ -821,21 +699,11 @@ body{
         St. Cyril Church<br>Korba, Heliopolis · Cairo
       </div>
       <div class="loc-btns">
-        <a class="loc-btn"
-           href="https://maps.app.goo.gl/9CaR8Z7SLo1oKhgZ7"
-           target="_blank" rel="noopener">
-          📍 Google Maps
-        </a>
+        <a class="loc-btn" href="https://maps.app.goo.gl/9CaR8Z7SLo1oKhgZ7" target="_blank" rel="noopener">📍 Google Maps</a>
       </div>
     </div>
 
-  </div><!-- END BAND 2 -->
-
-
-  <!-- ┌──────────────────────────────────
-       │  BAND 3 · WEDDING RECEPTION
-       └────────────────────────────────── -->
-  <div id="b3" class="band">
+  </div><div id="b3" class="band">
 
     <div class="lbl rev on-light" style="margin-bottom:6px;">The Wedding Reception</div>
 
@@ -847,51 +715,30 @@ body{
         JW Marriott Hotel<br>Mirage City, Ring Road · Cairo
       </div>
       <div class="loc-btns">
-        <a class="loc-btn"
-           href="https://maps.google.com/?q=JW+Marriott+Hotel+Cairo+Mirage+City"
-           target="_blank" rel="noopener">
-          📍 Google Maps
-        </a>
+        <a class="loc-btn" href="https://maps.google.com/?q=JW+Marriott+Hotel+Cairo+Mirage+City" target="_blank" rel="noopener">📍 Google Maps</a>
       </div>
     </div>
 
-  </div><!-- END BAND 3 -->
+  </div><div id="b4" class="band">
 
-
-  <!-- ┌──────────────────────────────────
-       │  BAND 4 · RSVP BUTTON
-       └────────────────────────────────── -->
-  <div id="b4" class="band">
-
-    <p class="waiting on-light rev">We are waiting for you…</p>
+    <p class="waiting on-light rev"></br></br>We are waiting for you…</p>
 
     <div class="rev" style="margin-top: 15px;">
       <button class="rsvp-trigger" onclick="openRSVP()">R S V P</button>
     </div>
 
-  </div><!-- END BAND 4 -->
-
-
-  <!-- ┌──────────────────────────────────
-       │  BAND 5 · CLOSING — WITH LOVE
-       └────────────────────────────────── -->
-  <div id="b5" class="band">
+  </div><div id="b5" class="band">
 
     <div class="rule" style="width:20%;margin:0 auto 8px;"></div>
 
     <div class="rev">
-      <p class="closing-love on-light">With all our love</br>,</p>
-      <div class="closing-names on-light">Teresa &amp; Claudio</div>
+      <p class="closing-love on-light">With all our love,</br></p>
+      <div class="closing-names on-light">Teresa & Claudio</div>
       <div class="rule" style="width:20%;margin:2px auto;"></div>
-      <p class="closing-date"></br>16 · March · 2026 · Cairo, Egypt</p>
+      <p class="closing-date">16 · March · 2026 · Cairo, Egypt</p>
     </div>
 
-  </div><!-- END BAND 5 -->
-
-  <!-- ══════════════════════════════════════
-       MODAL POPUP FOR RSVP
-  ══════════════════════════════════════ -->
-  <div id="rsvpModal" class="modal-overlay">
+  </div><div id="rsvpModal" class="modal-overlay">
     <div class="modal-content">
       <button class="modal-close" onclick="closeRSVP()">✕</button>
 
@@ -948,12 +795,7 @@ body{
     </div>
   </div>
 
-</div><!-- end .page -->
-
-<!-- ══════════════════════════════════════
-     BACKGROUND MUSIC
-══════════════════════════════════════ -->
-<audio id="bgMusic" loop>
+</div><audio id="bgMusic" loop>
   <source src="music.mp3" type="audio/mpeg">
 </audio>
 
@@ -962,7 +804,6 @@ body{
 </button>
 
 <script>
-// ── LOADER PARTICLES ──────────────────────────────
 (function spawnParticles() {
   const container = document.getElementById('loaderParticles');
   const count = 18;
@@ -984,7 +825,6 @@ body{
   }
 })();
 
-// ── MUSIC LOGIC ──────────────────────────────────
 const music = document.getElementById('bgMusic');
 const musicBtn = document.getElementById('musicBtn');
 
@@ -1012,13 +852,10 @@ function tryAutoplay() {
 document.addEventListener('click', tryAutoplay);
 document.addEventListener('touchstart', tryAutoplay);
 
-// ── LOADER LOGIC ──────────────────────────────────
 window.addEventListener('load', function() {
   const loader = document.getElementById('loader');
   const page   = document.getElementById('mainPage');
-
-  // Give loader a minimum display time for the cinema experience
-  const minDisplay = 2400; // ms — lets all loader animations play
+  const minDisplay = 2400; 
   const startTime  = performance.now();
 
   function dismissLoader() {
@@ -1033,11 +870,9 @@ window.addEventListener('load', function() {
       }, 1200);
     }, remaining);
   }
-
   dismissLoader();
 });
 
-// Fallback
 setTimeout(() => {
   const loader = document.getElementById('loader');
   if (loader && loader.style.display !== 'none') {
@@ -1049,10 +884,7 @@ setTimeout(() => {
   }
 }, 7000);
 
-// ── RSVP MODAL LOGIC ──────────────────────────────
-function openRSVP() {
-  document.getElementById('rsvpModal').classList.add('active');
-}
+function openRSVP() { document.getElementById('rsvpModal').classList.add('active'); }
 function closeRSVP() {
   document.getElementById('rsvpModal').classList.remove('active');
   setTimeout(() => {
@@ -1067,23 +899,18 @@ function submitRSVPModal() {
   document.getElementById('modalSuccess').style.display = 'block';
 }
 
-// ── SCROLL REVEAL — enhanced with stagger ─────────
 const io = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
       const el = e.target;
       const delay = el.dataset.delay || 0;
-      setTimeout(() => {
-        el.classList.add('on');
-      }, delay);
+      setTimeout(() => { el.classList.add('on'); }, delay);
       io.unobserve(el);
     }
   });
 }, { threshold: 0.1 });
 
-// Add staggered delays to siblings within the same parent
 document.querySelectorAll('.rev').forEach((el, idx) => {
-  // Check if siblings exist in same band
   const siblings = Array.from(el.parentElement.querySelectorAll('.rev'));
   const sibIdx = siblings.indexOf(el);
   el.dataset.delay = sibIdx * 120;
