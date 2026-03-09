@@ -17,10 +17,10 @@
   --color-name-big: var(--roseDark);
   --size-name-big: clamp(2.6rem, 11vw, 2rem);
   --lh-name-big: 2.5;
-  --space-around-names: 15px;
+  --space-around-names: 15px; /* <-- TEXT POSITION CONTROLLER: Adjusts space above/below the golden separators */
 
   /* --- 2. OTHER SPACING & SIZES FOR THE UPPER PART (BAND 1) --- */
-  --space-above-date: 5px;
+  --space-above-date: 5px;   /* <-- TEXT POSITION CONTROLLER: Adjusts distance between top text and the Date block */
   --size-pre-text: clamp(0.7rem, 2vw, 0.6rem);
   
   /* INDEPENDENT DATE SIZES */
@@ -39,6 +39,24 @@
   --size-waiting: clamp(1.5rem, 7vw, 2.4rem);
   --size-closing-names: clamp(1.8rem, 6.5vw, 2.6rem);
   --size-closing-love: clamp(0.8rem, 1.2vw, 1.4rem);
+
+  /* --- 4. SECTION POSITION CONTROLLERS (Move text blocks up/down the background image) --- */
+  --pos-b1-top: 40%;       /* <-- TEXT POSITION CONTROLLER: Pushes the main top text ("Teresa & Claudio") further down the page */
+  --pos-quote-top: -10%;     /* <-- TEXT POSITION CONTROLLER: Controls spacing above the "Being deeply loved" quote */
+  --pos-quote-bot: 5%;    /* <-- TEXT POSITION CONTROLLER: Controls spacing below the quote */
+  --pos-b2-bot: 32%;       /* <-- TEXT POSITION CONTROLLER: Controls spacing below the Church section */
+  --pos-b3-bot: 98%;       /* <-- TEXT POSITION CONTROLLER: Controls spacing below the Reception section */
+  --pos-b4-bot: 25%;       /* <-- TEXT POSITION CONTROLLER: Controls spacing below the RSVP section */
+  --pos-b5-top: 20%;       /* <-- TEXT POSITION CONTROLLER: Pushes the Closing ("With all our love") further down */
+  --pos-b5-bot: 20%;       /* <-- TEXT POSITION CONTROLLER: Controls space at the absolute bottom of the page */
+
+  /* --- 5. BUTTON SIZE CONTROLLERS --- */
+  --btn-loc-pad: 8px 18px;  /* <-- BUTTON SIZE CONTROLLER: Adjust Location buttons (1st value is Height, 2nd is Width) */
+  --btn-loc-font: clamp(0.65rem, 3vw, 0.9rem); /* <-- BUTTON SIZE CONTROLLER: Location text size */
+  
+  --btn-rsvp-pad: 12px 40px; /* <-- BUTTON SIZE CONTROLLER: Adjust main RSVP button (Height, Width) */
+  --btn-rsvp-font: clamp(0.9rem, 4vw, 1.2rem); /* <-- BUTTON SIZE CONTROLLER: RSVP text size */
+
 
   /* ─────────────────────────────────────────
      COLOUR PALETTE
@@ -246,24 +264,25 @@ body{
   transform: scale(1);
 }
 
-/* ── BANDS ───────────────────────────────── */
+/* ── BANDS (SECTIONS) ───────────────────────────────── */
 .band{
   width:100%;
   display:flex;
   flex-direction:column;
-  align-items:center;
+  align-items:center;  /* <-- TEXT POSITION CONTROLLER: Centers text horizontally in all bands */
   justify-content:center;
-  text-align:center;
+  text-align:center;   /* <-- TEXT POSITION CONTROLLER: Centers text horizontally in all bands */
   position:relative;
   flex-shrink:0;
 }
 
-#b1{ height: 37%; justify-content: flex-start; padding-top: 40%; }
-#quote-band { padding: 2% 8%; margin-top: 17%; margin-bottom: 10%; }
-#b2{ padding: 6% 20%; margin-bottom: 20%; }
-#b3{ padding: 2% 20%; margin-bottom: 70%; }
-#b4{ padding: 2% 25%; margin-bottom: 50%; }
-#b5{ margin-top: 28% auto; padding-bottom: 20%; }
+/* These variables link back to the :root controllers at the top of the file! */
+#b1{ height: 40%; justify-content: flex-start; padding-top: var(--pos-b1-top); } /* <-- TEXT POSITION CONTROLLER: Top Section offset */
+#quote-band { padding: 2% 8%; margin-top: var(--pos-quote-top); margin-bottom: var(--pos-quote-bot); } /* <-- TEXT POSITION CONTROLLER: Quote offset */
+#b2{ padding: 6% 20%; margin-bottom: var(--pos-b2-bot); } /* <-- TEXT POSITION CONTROLLER: Church Section offset */
+#b3{ padding: 2% 20%; margin-bottom: var(--pos-b3-bot); } /* <-- TEXT POSITION CONTROLLER: Reception Section offset */
+#b4{ padding: 2% 25%; margin-bottom: var(--pos-b4-bot); } /* <-- TEXT POSITION CONTROLLER: RSVP Button Section offset */
+#b5{ margin-top: var(--pos-b5-top); padding-bottom: var(--pos-b5-bot); } /* <-- TEXT POSITION CONTROLLER: Bottom Closing offset */
 
 /* ── TEXT HELPERS ──────────────────────── */
 .on-light{ text-shadow: 1px 2px 4px rgba(59,51,43,0.4); }
@@ -283,7 +302,7 @@ body{
   padding:0 6px;
 }
 .rule-names {
-  margin: var(--space-around-names) auto;
+  margin: var(--space-around-names) auto; /* <-- TEXT POSITION CONTROLLER: Margin above and below the golden divider */
 }
 
 /* ── MICRO LABEL ───────────────────────── */
@@ -307,23 +326,23 @@ body{
   font-style:italic;
   font-weight: 500;
   letter-spacing:0.08em;
-  margin: 0; /* Keeps perfectly centered between the rules */
-  padding: 5px 0;
+  margin: 0; 
+  padding: 5px 0; /* <-- TEXT POSITION CONTROLLER: Internal space around "REQUEST THE PLEASURE..." */
 }
 .name-big{
   font-family: var(--font-name-big);
   font-size: var(--size-name-big);
   line-height: var(--lh-name-big);
   color: var(--color-name-big);
-  text-align: center;
+  text-align: center; /* <-- TEXT POSITION CONTROLLER: Centers the big names horizontally */
 }
 
 /* Stacked Date Style */
 .date-stack {
-  margin-top: var(--space-above-date);
+  margin-top: var(--space-above-date); /* <-- TEXT POSITION CONTROLLER: Push the date stack away from the upper separator */
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center; /* <-- TEXT POSITION CONTROLLER: Center the date text horizontally */
 }
 .ds-day {
   font-family: 'Cinzel', serif;
@@ -331,7 +350,7 @@ body{
   line-height: var(--lh-date-line1);
   color: var(--ink);
   font-style: italic;
-  margin-bottom: 4px;
+  margin-bottom: 4px; /* <-- TEXT POSITION CONTROLLER: Spacing between Saturday and 16th of May */
 }
 .ds-line1 {
   font-family: 'Cinzel', serif;
@@ -339,7 +358,7 @@ body{
   line-height: var(--lh-date-line1);
   color: var(--ink);
   font-style: italic;
-  margin-bottom: 4px;
+  margin-bottom: 4px; /* <-- TEXT POSITION CONTROLLER: Spacing between 16th of May and 2026 */
 }
 .ds-year {
   font-family: 'Cinzel', serif;
@@ -347,7 +366,7 @@ body{
   line-height: var(--lh-date-year);
   color: var(--ink);
   letter-spacing: 0.4em;
-  margin-right: -0.4em; /* Compensate for letter spacing */
+  margin-right: -0.4em; /* Compensate for letter spacing to keep text centered */
   margin-top: 2px;
 }
 
@@ -360,8 +379,8 @@ body{
   color:var(--ink);
   font-style:italic;
   line-height:1.6;
-  margin-bottom:15px;
-  padding: 0 4%;
+  margin-bottom:15px; /* <-- TEXT POSITION CONTROLLER: Distance between the quote and the small golden separator beneath it */
+  padding: 0 4%;      /* <-- TEXT POSITION CONTROLLER: Squeezes the quote horizontally (adds padding left and right) */
 }
 
 /* ═══════════════════════════════════════
@@ -370,7 +389,7 @@ body{
 .venue-pill{
   background: transparent;
   border: none;
-  padding: clamp(6px,1.8vw,12px) 0;
+  padding: clamp(6px,1.8vw,12px) 0; /* <-- TEXT POSITION CONTROLLER: Adjust internal padding of the venue cards */
   width: 90%; max-width: 320px;
   position: relative;
 }
@@ -383,20 +402,23 @@ body{
   font-size: var(--size-venue-time);
   color:var(--ink);
   font-weight:600;
-  line-height:1; margin-bottom:1px;
+  line-height:1; 
+  margin-bottom:1px; /* <-- TEXT POSITION CONTROLLER: Space between Time and Event Name */
 }
 .v-event{
   font-family:'Sacramento',cursive;
   font-size: var(--size-venue-event);
   color:var(--roseDark);
-  margin-bottom:2px; line-height:1.1;
+  margin-bottom:2px; /* <-- TEXT POSITION CONTROLLER: Space below the Event Name */
+  line-height:1.1;
 }
 .v-where{
   font-family:'EB Garamond',serif;
   font-size: var(--size-venue-where);
   color:var(--ink);
   font-style:italic;
-  line-height:1.7; margin-bottom:6px;
+  line-height:1.7; 
+  margin-bottom:6px; /* <-- TEXT POSITION CONTROLLER: Space between address and the map button */
 }
 
 .loc-btns{
@@ -405,10 +427,10 @@ body{
 }
 .loc-btn{
   font-family:'Cinzel',serif;
-  font-size:clamp(0.65rem,3vw,0.9rem);
+  font-size: var(--btn-loc-font);  /* <-- BUTTON SIZE CONTROLLER (Linked to :root) */
   color:var(--ink);
   display:inline-flex; align-items:center; gap:4px;
-  padding:8px 18px;
+  padding: var(--btn-loc-pad);     /* <-- BUTTON SIZE CONTROLLER (Linked to :root) */
   background:rgba(255,255,255,0.25);
   border:1px solid var(--dgold);
   letter-spacing:0.2em; text-transform:uppercase;
@@ -429,15 +451,15 @@ body{
   font-size: var(--size-waiting);
   color:var(--ink);
   line-height:1.2;
-  margin-bottom:6px;
+  margin-bottom:6px; /* <-- TEXT POSITION CONTROLLER: Space between "We are waiting..." and the button */
 }
 .rsvp-trigger{
   font-family: 'Cinzel', serif;
-  font-size: clamp(0.9rem, 4vw, 1.2rem);
+  font-size: var(--btn-rsvp-font); /* <-- BUTTON SIZE CONTROLLER (Linked to :root) */
   color: var(--ink);
   background: rgba(255,255,255,0.15);
   border: 1px solid var(--dgold);
-  padding: 12px 40px;
+  padding: var(--btn-rsvp-pad);    /* <-- BUTTON SIZE CONTROLLER (Linked to :root) */
   letter-spacing: 0.3em;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -533,10 +555,12 @@ body{
 .m-fg textarea { resize: none; min-height: 30px; }
 .m-submit {
   font-family: 'Cinzel', serif;
-  font-size: 0.75rem;
+  font-size: 0.75rem; /* <-- BUTTON SIZE CONTROLLER: Modal submit font size */
   color: #fff;
   background: #b39256;
-  width: 100%; padding: 14px; margin-top: 10px;
+  width: 100%; 
+  padding: 14px;      /* <-- BUTTON SIZE CONTROLLER: Modal submit button height */
+  margin-top: 10px;
   border: none;
   letter-spacing: 0.25em; text-transform: uppercase;
   cursor: pointer; transition: opacity 0.3s;
@@ -552,7 +576,7 @@ body{
   color:var(--ink);
   font-style:italic;
   letter-spacing:0.2em;
-  margin-bottom:-6px;
+  margin-bottom:-6px; /* <-- TEXT POSITION CONTROLLER: Adjusts distance between "With all our love," and the Names */
 }
 .closing-names{
   font-family:'Sacramento',cursive;
@@ -565,7 +589,8 @@ body{
   font-size:clamp(0.38rem,1.4vw,0.52rem);
   color:#000000;
   letter-spacing:0.4em; opacity:1;
-  margin-top:8px; text-shadow:none;
+  margin-top:8px;     /* <-- TEXT POSITION CONTROLLER: Spacing between bottom divider line and the final date */
+  text-shadow:none;
 }
 
 /* ══════════════════════════════════════════════════════
@@ -677,6 +702,7 @@ body{
     <div class="rule rule-names ani ani-rule-bot"></div>
 
     <div class="date-stack ani ani-date">
+      <!-- I kept your </br> tags below, but you can also use the CSS spacing variables above! -->
       <div class="ds-day on-light"></br></br></br>Saturday</div>
       <div class="ds-line1 on-light">16th of May</div>
       <div class="ds-year on-light">2026</div>
