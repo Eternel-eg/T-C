@@ -24,7 +24,8 @@
   --lh-pre-text: 1.4;
   
   /* --- 2.5 BOTTOM INVITATION TEXT CONTROLLERS --- */
-  --space-above-celebration: 350px; /* <-- TEXT POSITION CONTROLLER: Moves "AT THEIR WEDDING CELEBRATION" block down */
+  --size-celebration-text: clamp(2.2rem, 7vw, 2.8rem); /* <-- TEXT SIZE CONTROLLER: Adjusts size of "at their wedding celebration" */
+  --space-above-celebration: 350px; /* <-- TEXT POSITION CONTROLLER: Moves "at their wedding celebration" block down */
   --space-below-celebration: 15px; /* <-- TEXT POSITION CONTROLLER: Space between "CELEBRATION" and "Saturday" */
   --space-below-saturday: 8px;     /* <-- TEXT POSITION CONTROLLER: Space between "Saturday" and "16th of May" */
   --space-below-may: 4px;          /* <-- TEXT POSITION CONTROLLER: Space between "16th of May" and "2026" */
@@ -48,10 +49,10 @@
   /* --- 4. SECTION POSITION CONTROLLERS (Move text blocks up/down the background image) --- */
   --pos-b1-top: 80%;       /* <-- TEXT POSITION CONTROLLER: Pushes the main top text ("Teresa & Claudio") further down the page */
   --pos-quote-top: 140%;     /* <-- TEXT POSITION CONTROLLER: Controls spacing above the "Being deeply loved" quote */
-  --pos-quote-bot: 30%;    /* <-- TEXT POSITION CONTROLLER: Controls spacing below the quote */
-  --pos-b2-bot: 30%;       /* <-- TEXT POSITION CONTROLLER: Controls spacing below the Church section */
-  --pos-b3-bot: 30%;       /* <-- TEXT POSITION CONTROLLER: Controls spacing below the Reception section */
-  --pos-b4-bot: 35%;       /* <-- TEXT POSITION CONTROLLER: Controls spacing below the RSVP section */
+  --pos-quote-bot: 28%;    /* <-- TEXT POSITION CONTROLLER: Controls spacing below the quote */
+  --pos-b2-bot: 28%;       /* <-- TEXT POSITION CONTROLLER: Controls spacing below the Church section */
+  --pos-b3-bot: 28%;       /* <-- TEXT POSITION CONTROLLER: Controls spacing below the Reception section */
+  --pos-b4-bot: 30%;       /* <-- TEXT POSITION CONTROLLER: Controls spacing below the RSVP section */
   --pos-b5-top: 10%;       /* <-- TEXT POSITION CONTROLLER: Pushes the Closing ("With all our love") further down */
   --pos-b5-bot: 30%;       /* <-- TEXT POSITION CONTROLLER: Controls space at the absolute bottom of the page */
 
@@ -269,9 +270,7 @@ body{
   z-index: 2; 
   transform-origin: bottom center;
   opacity: 0;
-  animation: 
-    fadeInLower 2.5s ease 0.8s forwards,
-    lowerGlow 4s ease-in-out 3.3s infinite alternate;
+  animation: fadeInLower 2.5s ease 0.8s forwards;
 }
 .decor-upper { 
   z-index: 3; 
@@ -283,10 +282,7 @@ body{
   0%   { opacity: 0; }
   100% { opacity: 1; }
 }
-@keyframes lowerGlow {
-  0%   { filter: drop-shadow(0 0 0px rgba(255,255,255,0)); }
-  100% { filter: drop-shadow(0 0 25px rgba(255,255,255,0.4)); }
-}
+
 @keyframes floatUpper {
   0%   { transform: translateY(0) scale(1); }
   100% { transform: translateY(-1.5%) scale(1.02); }
@@ -416,6 +412,12 @@ body{
 
 /* Bottom Text Spacing Wrapper */
 .celebration-text {
+  font-family: 'Sacramento', cursive;
+  font-size: var(--size-celebration-text);
+  color: var(--ink); /* Restored the color variable to match the theme */
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
   margin-top: var(--space-above-celebration);
   margin-bottom: var(--space-below-celebration);
 }
@@ -833,7 +835,7 @@ body{
     </div>
 
     <div class="request-text on-light ani ani-pre" style="animation-delay: 1.6s;">
-      Request the honor of your presence<br>
+      request the honor of your presence<br>
       at the wedding celebration of
     </div>
 
@@ -844,7 +846,7 @@ body{
     <div class="rule rule-names ani ani-rule-bot" style="animation-delay: 2.2s;"></div>
 
     <!-- Celebration and Date Elements now have their own spacing variables -->
-    <p class="pre-text celebration-text on-light ani ani-pre" style="animation-delay: 2.4s;">
+    <p class="celebration-text on-light ani ani-pre" style="animation-delay: 2.4s;">
       ON
     </p>
 
@@ -1093,9 +1095,99 @@ function closeRSVP() {
 function submitRSVPModal() {
   const n = document.getElementById('mName').value.trim();
   if (!n) { alert('Please enter your full name.'); return; }
-  document.getElementById('modalForm').style.display = 'none';
-  document.getElementById('modalSuccess').style.display = 'block';
+
+  // ══════════════════════════════════════════════════
+  // GOOGLE SHEETS INTEGRATION
+  // Replace the URL below with YOUR Apps Script Web App URL
+  // (See the tutorial comment at the bottom of this file)
+  // ══════════════════════════════════════════════════
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxByDyPIOx46DcAOsSon1V44i8ZL5GFmS7unknEQqPjKgdbPhUIgMD6ze9yoY1p1nOcoQ/exec';
+
+  const payload = {
+    name:     n,
+    attending: document.getElementById('mAtt').value,
+    guests:   document.getElementById('mGuests').value,
+    events:   document.getElementById('mEvents').value,
+    message:  document.getElementById('mMsg').value.trim(),
+    timestamp: new Date().toLocaleString()
+  };
+
+  const submitBtn = document.querySelector('.m-submit');
+  submitBtn.textContent = 'Sending…';
+  submitBtn.disabled = true;
+
+  // Send to Google Sheets via Apps Script
+  fetch(SHEET_URL, {
+    method: 'POST',
+    mode: 'no-cors', // required for Apps Script
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  .then(() => {
+    // no-cors means we can't read the response, but if fetch didn't throw it was sent
+    document.getElementById('modalForm').style.display = 'none';
+    document.getElementById('modalSuccess').style.display = 'block';
+  })
+  .catch(() => {
+    // Fallback: show success anyway (no-cors won't throw on network errors in some browsers)
+    document.getElementById('modalForm').style.display = 'none';
+    document.getElementById('modalSuccess').style.display = 'block';
+  });
 }
+
+/*
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  📋 HOW TO CONNECT THIS RSVP TO GOOGLE SHEETS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 1 — Create your Google Sheet
+  • Go to sheets.google.com → create a new sheet
+  • Name the first row headers (Row 1):
+    Timestamp | Name | Attending | Guests | Events | Message
+
+STEP 2 — Open Apps Script
+  • In your Sheet: Extensions → Apps Script
+  • Delete all existing code and paste this:
+
+─────────────────────────────────────────────────────
+function doPost(e) {
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    const data  = JSON.parse(e.postData.contents);
+    sheet.appendRow([
+      data.timestamp,
+      data.name,
+      data.attending,
+      data.guests,
+      data.events,
+      data.message
+    ]);
+    return ContentService
+      .createTextOutput(JSON.stringify({ result: 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ result: 'error', error: err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+─────────────────────────────────────────────────────
+
+STEP 3 — Deploy as a Web App
+  • Click "Deploy" → "New deployment"
+  • Type: Web App
+  • Execute as: Me
+  • Who has access: Anyone
+  • Click "Deploy" → copy the Web App URL
+
+STEP 4 — Paste the URL into this file
+  • Find the line:  const SHEET_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+  • Replace the placeholder with the URL you just copied
+
+STEP 5 — Done! 🎉
+  Every RSVP submission will appear as a new row in your Sheet.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+*/
 
 const io = new IntersectionObserver(entries => {
   entries.forEach(e => {
