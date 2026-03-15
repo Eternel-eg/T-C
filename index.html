@@ -15,20 +15,25 @@
   /* --- 1. UPPER NAMES CONTROL ("Teresa & Claudio") --- */
   --font-name-big: 'Sacramento', cursive;
   --color-name-big: var(--roseDark);
-  --size-name-big: clamp(2.6rem, 11vw, 2rem);
+  --size-name-big: clamp(2.8rem, 11vw, 3.2rem);
   --lh-name-big: 2.5;
   --space-around-names: 15px; /* <-- TEXT POSITION CONTROLLER: Adjusts space above/below the golden separators */
 
   /* --- 2. OTHER SPACING & SIZES FOR THE UPPER PART (BAND 1) --- */
-  --space-above-date: 5px;   /* <-- TEXT POSITION CONTROLLER: Adjusts distance between top text and the Date block */
   --size-pre-text: clamp(0.7rem, 2vw, 0.6rem);
+  --lh-pre-text: 1.4;
   
+  /* --- 2.5 BOTTOM INVITATION TEXT CONTROLLERS --- */
+  --space-above-celebration: 350px; /* <-- TEXT POSITION CONTROLLER: Moves "AT THEIR WEDDING CELEBRATION" block down */
+  --space-below-celebration: 15px; /* <-- TEXT POSITION CONTROLLER: Space between "CELEBRATION" and "Saturday" */
+  --space-below-saturday: 8px;     /* <-- TEXT POSITION CONTROLLER: Space between "Saturday" and "16th of May" */
+  --space-below-may: 4px;          /* <-- TEXT POSITION CONTROLLER: Space between "16th of May" and "2026" */
+
   /* INDEPENDENT DATE SIZES */
   --size-date-day: clamp(1.2rem, 7vw, 1.4rem);   /* Controls "Saturday" */
   --size-date-line1: clamp(1rem, 6vw, 1.7rem);   /* Controls "16th of May" */
   --size-date-year: clamp(0.8rem, 3.5vw, 1rem);  /* Controls "2026" */
   
-  --lh-pre-text: 1.4;
   --lh-date-line1: 1.2;
   --lh-date-year: 1.2;
 
@@ -38,17 +43,17 @@
   --size-venue-where: clamp(0.95rem, 4vw, 1rem);
   --size-waiting: clamp(1.5rem, 7vw, 2.4rem);
   --size-closing-names: clamp(1.8rem, 6.5vw, 2.6rem);
-  --size-closing-love: clamp(0.8rem, 1.2vw, 1.4rem);
+  --size-closing-love: clamp(0.9rem, 1.2vw, 2rem);
 
   /* --- 4. SECTION POSITION CONTROLLERS (Move text blocks up/down the background image) --- */
-  --pos-b1-top: 40%;       /* <-- TEXT POSITION CONTROLLER: Pushes the main top text ("Teresa & Claudio") further down the page */
-  --pos-quote-top: -10%;     /* <-- TEXT POSITION CONTROLLER: Controls spacing above the "Being deeply loved" quote */
-  --pos-quote-bot: 5%;    /* <-- TEXT POSITION CONTROLLER: Controls spacing below the quote */
-  --pos-b2-bot: 35%;       /* <-- TEXT POSITION CONTROLLER: Controls spacing below the Church section */
-  --pos-b3-bot: 100%;       /* <-- TEXT POSITION CONTROLLER: Controls spacing below the Reception section */
-  --pos-b4-bot: 22%;       /* <-- TEXT POSITION CONTROLLER: Controls spacing below the RSVP section */
-  --pos-b5-top: 15%;       /* <-- TEXT POSITION CONTROLLER: Pushes the Closing ("With all our love") further down */
-  --pos-b5-bot: 20%;       /* <-- TEXT POSITION CONTROLLER: Controls space at the absolute bottom of the page */
+  --pos-b1-top: 80%;       /* <-- TEXT POSITION CONTROLLER: Pushes the main top text ("Teresa & Claudio") further down the page */
+  --pos-quote-top: 140%;     /* <-- TEXT POSITION CONTROLLER: Controls spacing above the "Being deeply loved" quote */
+  --pos-quote-bot: 30%;    /* <-- TEXT POSITION CONTROLLER: Controls spacing below the quote */
+  --pos-b2-bot: 30%;       /* <-- TEXT POSITION CONTROLLER: Controls spacing below the Church section */
+  --pos-b3-bot: 30%;       /* <-- TEXT POSITION CONTROLLER: Controls spacing below the Reception section */
+  --pos-b4-bot: 35%;       /* <-- TEXT POSITION CONTROLLER: Controls spacing below the RSVP section */
+  --pos-b5-top: 10%;       /* <-- TEXT POSITION CONTROLLER: Pushes the Closing ("With all our love") further down */
+  --pos-b5-bot: 30%;       /* <-- TEXT POSITION CONTROLLER: Controls space at the absolute bottom of the page */
 
   /* --- 5. BUTTON SIZE CONTROLLERS --- */
   --btn-loc-pad: 8px 18px;  /* <-- BUTTON SIZE CONTROLLER: Adjust Location buttons (1st value is Height, 2nd is Width) */
@@ -112,71 +117,47 @@ body{
   50%      { transform: scale(1.15); opacity: 1; }
 }
 
-.loader-rings {
-  width: 90px; height: 55px;
+.loader-plant-container {
   position: relative;
-  margin-bottom: 36px;
-  animation: ringFloat 4s ease-in-out infinite;
+  margin-bottom: 25px;
+  animation: plantFloat 4s ease-in-out infinite;
 }
-@keyframes ringFloat {
-  0%,100% { transform: translateY(0); }
-  50%      { transform: translateY(-6px); }
+@keyframes plantFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 
-.ring {
-  position: absolute;
-  width: 52px; height: 52px;
-  border-radius: 50%;
-  border: 2.5px solid transparent;
-  animation: ringAppear 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+.plant-stem {
+  stroke-dasharray: 120;
+  stroke-dashoffset: 120;
+  animation: drawStem 2.5s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
+}
+.plant-leaf, .plant-bud {
   opacity: 0;
+  transform: scale(0);
 }
-.ring-left {
-  left: 0; top: 0;
-  border-color: var(--dgold);
-  box-shadow: 0 0 16px rgba(179,146,86,0.35), inset 0 0 8px rgba(179,146,86,0.08);
-  animation-delay: 0.2s;
-}
-.ring-right {
-  right: 0; top: 0;
-  border-color: #8da5a3;
-  box-shadow: 0 0 16px rgba(108,135,133,0.35), inset 0 0 8px rgba(108,135,133,0.08);
-  animation-delay: 0.55s;
-}
-@keyframes ringAppear {
-  from { opacity: 0; transform: scale(0.6) rotate(-30deg); }
-  to   { opacity: 1; transform: scale(1) rotate(0deg); }
-}
+.plant-leaf.l1 { transform-origin: 31px 70px; animation: popLeaf 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 1.2s forwards; }
+.plant-leaf.l2 { transform-origin: 37px 45px; animation: popLeaf 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 1.7s forwards; }
+.plant-leaf.l3 { transform-origin: 33px 25px; animation: popLeaf 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 2.2s forwards; }
+.plant-bud { transform-origin: 30px 8px; animation: popLeaf 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 2.6s forwards; }
 
-.ring-shimmer {
-  position: absolute;
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--dgold);
-  box-shadow: 0 0 8px 2px rgba(179,146,86,0.8);
-  animation: orbit 3s linear infinite;
-  animation-delay: 1.2s;
-  opacity: 0;
-}
-@keyframes orbit {
-  0%   { opacity: 0; }
-  10%  { opacity: 1; }
-  90%  { opacity: 1; }
-  100% { opacity: 0; transform: rotate(360deg) translateX(55px); }
-}
+@keyframes drawStem { to { stroke-dashoffset: 0; } }
+@keyframes popLeaf { to { opacity: 1; transform: scale(1); } }
 
-.loader-title {
-  font-family: 'Sacramento', cursive;
-  font-size: clamp(2.2rem, 8vw, 3rem);
-  color: var(--dgold);
-  letter-spacing: 0.04em;
-  text-align: center;
-  line-height: 1.1;
+.loader-logo-img {
+  width: 55%;           
+  max-width: 240px;     
+  object-fit: contain;
   margin-bottom: 6px;
   opacity: 0;
-  animation: titleReveal 1s cubic-bezier(0.22, 1, 0.36, 1) 0.8s forwards;
-  text-shadow: 0 0 40px rgba(179,146,86,0.4);
+  animation: logoRevealLoader 1.5s cubic-bezier(0.22, 1, 0.36, 1) 1.5s forwards;
+  filter: drop-shadow(0 0 15px rgba(179,146,86,0.25));
 }
+@keyframes logoRevealLoader {
+  from { opacity: 0; transform: translateY(15px) scale(0.95); filter: blur(6px) drop-shadow(0 0 10px rgba(179,146,86,0)); }
+  to   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0) drop-shadow(0 0 15px rgba(179,146,86,0.3)); }
+}
+
 @keyframes titleReveal {
   from { opacity: 0; transform: translateY(12px) scale(0.97); filter: blur(6px); }
   to   { opacity: 1; transform: translateY(0)   scale(1);    filter: blur(0); }
@@ -197,7 +178,7 @@ body{
   text-align: center;
   opacity: 0;
   animation: titleReveal 1s ease 1.3s forwards;
-  margin-right: -0.5em; /* Fixes off-center issue caused by letter-spacing */
+  margin-right: -0.5em;
 }
 
 .loader-rule {
@@ -250,11 +231,11 @@ body{
 .page{
   width: min(100vw, 430px);
   height: calc(min(100vw, 430px) * 7.2993);
-  position:relative;
-  background: url('https://drive.google.com/thumbnail?id=1-IpU_WtgEDw6HKuAyBNKXSwyAAK8l9Wx&sz=w2000') top center / 100% 100% no-repeat;
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
+  position: relative;
+  background: var(--parch);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   opacity: 0;
   transform: scale(0.99);
   transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1), transform 1.8s cubic-bezier(0.4, 0, 0.2, 1);
@@ -264,29 +245,91 @@ body{
   transform: scale(1);
 }
 
+/* ══════════════════════════════════════════════════════
+   ✦ LAYERED BACKGROUND ANIMATIONS
+══════════════════════════════════════════════════════ */
+.page-bg-layers {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.page-bg-layers img {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: fill; 
+  display: block;
+}
+.bg-main { 
+  z-index: 1; 
+}
+.decor-lower { 
+  z-index: 2; 
+  transform-origin: bottom center;
+  opacity: 0;
+  animation: 
+    fadeInLower 2.5s ease 0.8s forwards,
+    lowerGlow 4s ease-in-out 3.3s infinite alternate;
+}
+.decor-upper { 
+  z-index: 3; 
+  transform-origin: top center;
+  animation: floatUpper 10s ease-in-out infinite alternate;
+}
+
+@keyframes fadeInLower {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes lowerGlow {
+  0%   { filter: drop-shadow(0 0 0px rgba(255,255,255,0)); }
+  100% { filter: drop-shadow(0 0 25px rgba(255,255,255,0.4)); }
+}
+@keyframes floatUpper {
+  0%   { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-1.5%) scale(1.02); }
+}
+@keyframes logoReveal {
+  0%   { opacity: 0; transform: scale(0.88) translateY(-14px); filter: blur(8px) drop-shadow(0 0 0px rgba(179,146,86,0)); }
+  50%  { filter: blur(2px) drop-shadow(0 0 20px rgba(179,146,86,0.25)); }
+  100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0) drop-shadow(0 0 12px rgba(179,146,86,0.2)); }
+}
+@keyframes logoBreath {
+  0%   { transform: scale(1);     filter: drop-shadow(0 0 6px rgba(179,146,86,0.15)) drop-shadow(0 0 0px rgba(255,255,255,0)); }
+  30%  { transform: scale(1.01);  filter: drop-shadow(0 0 14px rgba(179,146,86,0.4)) drop-shadow(0 0 8px rgba(255,255,255,0.18)); }
+  60%  { transform: scale(1.018); filter: drop-shadow(0 0 22px rgba(179,146,86,0.55)) drop-shadow(0 0 16px rgba(255,255,255,0.28)); }
+  100% { transform: scale(1);     filter: drop-shadow(0 0 6px rgba(179,146,86,0.15)) drop-shadow(0 0 0px rgba(255,255,255,0)); }
+}
+
 /* ── BANDS (SECTIONS) ───────────────────────────────── */
 .band{
   width:100%;
   display:flex;
   flex-direction:column;
-  align-items:center;  /* <-- TEXT POSITION CONTROLLER: Centers text horizontally in all bands */
+  align-items:center;  
   justify-content:center;
-  text-align:center;   /* <-- TEXT POSITION CONTROLLER: Centers text horizontally in all bands */
+  text-align:center;   
   position:relative;
   flex-shrink:0;
+  z-index: 10; 
 }
 
-/* These variables link back to the :root controllers at the top of the file! */
-#b1{ height: 40%; justify-content: flex-start; padding-top: var(--pos-b1-top); } /* <-- TEXT POSITION CONTROLLER: Top Section offset */
-#quote-band { padding: 2% 8%; margin-top: var(--pos-quote-top); margin-bottom: var(--pos-quote-bot); } /* <-- TEXT POSITION CONTROLLER: Quote offset */
-#b2{ padding: 6% 20%; margin-bottom: var(--pos-b2-bot); } /* <-- TEXT POSITION CONTROLLER: Church Section offset */
-#b3{ padding: 2% 20%; margin-bottom: var(--pos-b3-bot); } /* <-- TEXT POSITION CONTROLLER: Reception Section offset */
-#b4{ padding: 2% 25%; margin-bottom: var(--pos-b4-bot); } /* <-- TEXT POSITION CONTROLLER: RSVP Button Section offset */
-#b5{ margin-top: var(--pos-b5-top); padding-bottom: var(--pos-b5-bot); } /* <-- TEXT POSITION CONTROLLER: Bottom Closing offset */
+#b1{ height: 20%; justify-content: flex-start; padding-top: var(--pos-b1-top); }
+#quote-band { padding: 2% 10%; margin-top: var(--pos-quote-top); margin-bottom: var(--pos-quote-bot); } 
+#b2{ padding: 2% 8%; margin-bottom: var(--pos-b2-bot); }
+#b3{ padding: 2% 10%; margin-bottom: var(--pos-b3-bot); }
+#b4{ padding: 2% 10%; margin-bottom: var(--pos-b4-bot); }
+#b5{ margin-top: var(--pos-b5-top); padding-bottom: var(--pos-b5-bot); }
 
 /* ── TEXT HELPERS ──────────────────────── */
-.on-light{ text-shadow: 1px 2px 4px rgba(59,51,43,0.4); }
-.on-dark{ text-shadow: 1px 2px 4px rgba(0,0,0,0.6); }
+.on-light{ 
+  text-shadow: 0 1px 4px rgba(59,51,43,0.15), 0 2px 10px rgba(255,255,255,0.6); 
+}
+.on-dark{ 
+  text-shadow: 1px 2px 4px rgba(0,0,0,0.6); 
+}
 
 /* ── DIVIDER ───────────────────────────── */
 .rule{
@@ -302,7 +345,7 @@ body{
   padding:0 6px;
 }
 .rule-names {
-  margin: var(--space-around-names) auto; /* <-- TEXT POSITION CONTROLLER: Margin above and below the golden divider */
+  margin: var(--space-around-names) auto; 
 }
 
 /* ── MICRO LABEL ───────────────────────── */
@@ -310,39 +353,79 @@ body{
   font-family:'Cinzel',serif;
   font-size:clamp(0.7rem,2vw,1rem);
   color:var(--ink);
-  letter-spacing:0.5em; text-transform:uppercase;
-  margin-right: -0.5em; /* Fixes centering issue from letter-spacing */
+  letter-spacing:0.4em; text-transform:uppercase;
+  margin-right: -0.4em; 
   opacity:0.8;
+  white-space: nowrap;
 }
 
 /* ═══════════════════════════════════════
-   BAND 1 — INVITATION
+   BAND 1 — INVITATION TEXT UPDATE
 ═══════════════════════════════════════ */
+.parents-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 15px;
+  margin-top: 38px;
+  margin-bottom: 18px;
+  padding: 0 5%;
+}
+.parent-name {
+  font-family: 'Sacramento', cursive; /* Elegant handwriting font */
+  font-size: clamp(1rem, 5.5vw, 1.2rem);
+  color: var(--ink);
+  line-height: 1.2;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.parent-separator {
+  font-family: 'Sacramento', cursive;
+  font-size: clamp(1.4rem, 4.5vw, 1.8rem);
+  color: var(--dgold);
+  font-style: normal;
+}
+.request-text {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: clamp(0.95rem, 3.8vw, 1.15rem);
+  color: var(--ink);
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
 .pre-text{
   font-family:'Cinzel',serif;
   font-size: var(--size-pre-text);
   line-height: var(--lh-pre-text);
   color:var(--ink);
-  font-style:italic;
-  font-weight: 500;
-  letter-spacing:0.08em;
+  font-style:normal;
+  font-weight: 600;
+  letter-spacing:0.1em;
   margin: 0; 
-  padding: 5px 0; /* <-- TEXT POSITION CONTROLLER: Internal space around "REQUEST THE PLEASURE..." */
+  padding: 5px 0; 
 }
 .name-big{
   font-family: var(--font-name-big);
   font-size: var(--size-name-big);
   line-height: var(--lh-name-big);
   color: var(--color-name-big);
-  text-align: center; /* <-- TEXT POSITION CONTROLLER: Centers the big names horizontally */
+  text-align: center; 
+}
+
+/* Bottom Text Spacing Wrapper */
+.celebration-text {
+  margin-top: var(--space-above-celebration);
+  margin-bottom: var(--space-below-celebration);
 }
 
 /* Stacked Date Style */
 .date-stack {
-  margin-top: var(--space-above-date); /* <-- TEXT POSITION CONTROLLER: Push the date stack away from the upper separator */
+  margin-top: 0; /* Overridden by the new space variables above */
   display: flex;
   flex-direction: column;
-  align-items: center; /* <-- TEXT POSITION CONTROLLER: Center the date text horizontally */
+  align-items: center; 
 }
 .ds-day {
   font-family: 'Cinzel', serif;
@@ -350,7 +433,7 @@ body{
   line-height: var(--lh-date-line1);
   color: var(--ink);
   font-style: italic;
-  margin-bottom: 4px; /* <-- TEXT POSITION CONTROLLER: Spacing between Saturday and 16th of May */
+  margin-bottom: var(--space-below-saturday); 
 }
 .ds-line1 {
   font-family: 'Cinzel', serif;
@@ -358,7 +441,7 @@ body{
   line-height: var(--lh-date-line1);
   color: var(--ink);
   font-style: italic;
-  margin-bottom: 4px; /* <-- TEXT POSITION CONTROLLER: Spacing between 16th of May and 2026 */
+  margin-bottom: var(--space-below-may); 
 }
 .ds-year {
   font-family: 'Cinzel', serif;
@@ -366,21 +449,61 @@ body{
   line-height: var(--lh-date-year);
   color: var(--ink);
   letter-spacing: 0.4em;
-  margin-right: -0.4em; /* Compensate for letter spacing to keep text centered */
+  margin-right: -0.4em; 
   margin-top: 2px;
 }
 
 /* ═══════════════════════════════════════
-   QUOTE SECTION
+   SECTION SEPARATOR — GROWING PLANT IMAGE
 ═══════════════════════════════════════ */
+.section-separator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+  position: relative;
+  z-index: 10;
+}
+.separator-plant-img {
+  width: 52%;
+  max-width: 200px;
+  object-fit: contain;
+  transform-origin: bottom center;
+  opacity: 0;
+}
+.separator-plant-img.plant-revealed {
+  animation: elegantPlantGrow 2.8s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+             plantSway 9s ease-in-out 3s infinite alternate;
+}
+@keyframes elegantPlantGrow {
+  0%   { opacity: 0; clip-path: inset(100% 10% 0% 10%); transform: scaleY(0.5) translateY(25px); filter: blur(3px); }
+  25%  { opacity: 0.7; }
+  60%  { clip-path: inset(0% 3% -5% 3%); }
+  100% { opacity: 1; clip-path: inset(-5% 0% -5% 0%); transform: scaleY(1) translateY(0); filter: blur(0); }
+}
+@keyframes plantSway {
+  0%   { transform: rotate(-0.8deg) translateX(-1px); }
+  100% { transform: rotate(0.8deg) translateX(1px); }
+}
 .quote-text{
   font-family:'EB Garamond',serif;
-  font-size:clamp(1.1rem, 4.5vw, 1.3rem);
+  font-size:clamp(1.2rem, 5vw, 1.4rem);
   color:var(--ink);
   font-style:italic;
   line-height:1.6;
-  margin-bottom:15px; /* <-- TEXT POSITION CONTROLLER: Distance between the quote and the small golden separator beneath it */
-  padding: 0 4%;      /* <-- TEXT POSITION CONTROLLER: Squeezes the quote horizontally (adds padding left and right) */
+  margin-bottom:15px; 
+  padding: 0 4%;      
+}
+.quote-ref {
+  display: block;
+  font-family: 'Cinzel', serif;
+  font-size: 0.65em;
+  margin-top: 15px;
+  font-style: normal;
+  letter-spacing: 0.1em;
+  color: var(--ink);
+  opacity: 0.85;
 }
 
 /* ═══════════════════════════════════════
@@ -389,13 +512,13 @@ body{
 .venue-pill{
   background: transparent;
   border: none;
-  padding: clamp(6px,1.8vw,12px) 0; /* <-- TEXT POSITION CONTROLLER: Adjust internal padding of the venue cards */
+  padding: clamp(6px,1.8vw,12px) 0; 
   width: 90%; max-width: 320px;
   position: relative;
 }
 
 .v-time, .v-event, .v-where {
-  text-shadow: 1px 2px 4px rgba(59,51,43,0.4);
+  text-shadow: 0 1px 4px rgba(59,51,43,0.15), 0 2px 10px rgba(255,255,255,0.6); 
 }
 .v-time{
   font-family:'Cinzel',serif;
@@ -403,13 +526,13 @@ body{
   color:var(--ink);
   font-weight:600;
   line-height:1; 
-  margin-bottom:1px; /* <-- TEXT POSITION CONTROLLER: Space between Time and Event Name */
+  margin-bottom:1px; 
 }
 .v-event{
   font-family:'Sacramento',cursive;
   font-size: var(--size-venue-event);
   color:var(--roseDark);
-  margin-bottom:2px; /* <-- TEXT POSITION CONTROLLER: Space below the Event Name */
+  margin-bottom:2px; 
   line-height:1.1;
 }
 .v-where{
@@ -418,7 +541,7 @@ body{
   color:var(--ink);
   font-style:italic;
   line-height:1.7; 
-  margin-bottom:6px; /* <-- TEXT POSITION CONTROLLER: Space between address and the map button */
+  margin-bottom:6px; 
 }
 
 .loc-btns{
@@ -427,10 +550,10 @@ body{
 }
 .loc-btn{
   font-family:'Cinzel',serif;
-  font-size: var(--btn-loc-font);  /* <-- BUTTON SIZE CONTROLLER (Linked to :root) */
+  font-size: var(--btn-loc-font);  
   color:var(--ink);
   display:inline-flex; align-items:center; gap:4px;
-  padding: var(--btn-loc-pad);     /* <-- BUTTON SIZE CONTROLLER (Linked to :root) */
+  padding: var(--btn-loc-pad);     
   background:rgba(255,255,255,0.25);
   border:1px solid var(--dgold);
   letter-spacing:0.2em; text-transform:uppercase;
@@ -451,15 +574,15 @@ body{
   font-size: var(--size-waiting);
   color:var(--ink);
   line-height:1.2;
-  margin-bottom:6px; /* <-- TEXT POSITION CONTROLLER: Space between "We are waiting..." and the button */
+  margin-bottom:6px; 
 }
 .rsvp-trigger{
   font-family: 'Cinzel', serif;
-  font-size: var(--btn-rsvp-font); /* <-- BUTTON SIZE CONTROLLER (Linked to :root) */
+  font-size: var(--btn-rsvp-font); 
   color: var(--ink);
   background: rgba(255,255,255,0.15);
   border: 1px solid var(--dgold);
-  padding: var(--btn-rsvp-pad);    /* <-- BUTTON SIZE CONTROLLER (Linked to :root) */
+  padding: var(--btn-rsvp-pad);    
   letter-spacing: 0.3em;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -555,11 +678,11 @@ body{
 .m-fg textarea { resize: none; min-height: 30px; }
 .m-submit {
   font-family: 'Cinzel', serif;
-  font-size: 0.75rem; /* <-- BUTTON SIZE CONTROLLER: Modal submit font size */
+  font-size: 0.75rem; 
   color: #fff;
   background: #b39256;
   width: 100%; 
-  padding: 14px;      /* <-- BUTTON SIZE CONTROLLER: Modal submit button height */
+  padding: 14px;      
   margin-top: 10px;
   border: none;
   letter-spacing: 0.25em; text-transform: uppercase;
@@ -576,7 +699,7 @@ body{
   color:var(--ink);
   font-style:italic;
   letter-spacing:0.2em;
-  margin-bottom:-6px; /* <-- TEXT POSITION CONTROLLER: Adjusts distance between "With all our love," and the Names */
+  margin-bottom:-6px; 
 }
 .closing-names{
   font-family:'Sacramento',cursive;
@@ -586,10 +709,10 @@ body{
 }
 .closing-date{
   font-family:'Cinzel',serif;
-  font-size:clamp(0.38rem,1.4vw,0.52rem);
+  font-size:clamp(0.5rem,1.4vw,0.52rem);
   color:#000000;
   letter-spacing:0.4em; opacity:1;
-  margin-top:8px;     /* <-- TEXT POSITION CONTROLLER: Spacing between bottom divider line and the final date */
+  margin-top:8px;     
   text-shadow:none;
 }
 
@@ -673,37 +796,60 @@ body{
 <div id="loader">
   <div class="loader-particles" id="loaderParticles"></div>
   <div class="loader-glow"></div>
-  <div class="loader-rings">
-    <div class="ring ring-left"></div>
-    <div class="ring ring-right"></div>
-    <div class="ring-shimmer"></div>
+  
+  <div class="loader-plant-container">
+    <svg class="growing-plant" width="60" height="90" viewBox="0 0 60 90">
+      <path class="plant-stem" d="M30 90 C 30 65 45 40 30 10" stroke="var(--dgold)" stroke-width="1.5" fill="none" stroke-linecap="round" />
+      <path class="plant-leaf l1" d="M31 70 C 15 70 10 55 20 50 C 25 50 31 60 31 70" fill="var(--dgold)" opacity="0.6"/>
+      <path class="plant-leaf l2" d="M37 45 C 55 45 60 30 45 25 C 40 25 37 35 37 45" fill="var(--dgold)" opacity="0.6"/>
+      <path class="plant-leaf l3" d="M33 25 C 15 25 10 10 20 5 C 25 5 33 15 33 25" fill="var(--dgold)" opacity="0.6"/>
+      <circle class="plant-bud" cx="30" cy="8" r="2.5" fill="var(--dgold)"/>
+    </svg>
   </div>
-  <div class="loader-title">
-    Teresa <span class="loader-ampersand">&</span> Claudio
-  </div>
+
+  <img class="loader-logo-img" src="https://drive.google.com/thumbnail?id=12GRXDh0I20gC_EI_X-unrw-o3O9oeq8u&sz=w1000" alt="Teresa & Claudio Logo">
+
   <div class="loader-rule"></div>
   <div class="loader-date"><br>16 · MAY · 2026 · Cairo</div>
 </div>
 
 <div class="page" id="mainPage">
 
+  <!-- ✦ LAYERED ANIMATED BACKGROUND ✦ -->
+  <div class="page-bg-layers">
+    <img class="bg-main" src="https://drive.google.com/thumbnail?id=1SykB1lCWheP5x5z8gqWafg8XD7gR92M6&sz=w2000" alt="Main Background">
+    <img class="decor-lower" src="https://drive.google.com/thumbnail?id=11vXJFNqIr-Xyxcf-lKoTU07g-CV_n0mA&sz=w2000" alt="Lower Floral Decoration">
+    <img class="decor-upper" src="https://drive.google.com/thumbnail?id=19je_zVADZ1FWnGZ7ia_K8rXvJ7rhu8l-&sz=w2000" alt="Upper Floral Decoration">
+    
+  </div>
+
   <div id="b1" class="band">
 
-    <div class="ani ani-name">
+    <!-- NEW INVITATION TYPOGRAPHY HIERARCHY -->
+    <div class="parents-wrapper on-light ani ani-pre" style="animation-delay: 1.2s;">
+      <div class="parent-name">Mr. and Mrs. Gargour</div>
+      <div class="parent-separator">&amp;</div>
+      <div class="parent-name">Mr. and Mrs. Lakah</div>
+    </div>
+
+    <div class="request-text on-light ani ani-pre" style="animation-delay: 1.6s;">
+      Request the honor of your presence<br>
+      at the wedding celebration of
+    </div>
+
+    <div class="ani ani-name" style="animation-delay: 2s;">
       <div class="name-big name-shimmer on-light">Teresa & Claudio</div>
     </div>
 
-    <div class="rule rule-names on-light ani ani-rule-top"></div>
+    <div class="rule rule-names ani ani-rule-bot" style="animation-delay: 2.2s;"></div>
 
-    <p class="pre-text on-light ani ani-pre">
-      REQUEST THE PLEASURE <br>OF YOUR COMPANY <br>AT THEIR WEDDING CELEBRATION
+    <!-- Celebration and Date Elements now have their own spacing variables -->
+    <p class="pre-text celebration-text on-light ani ani-pre" style="animation-delay: 2.4s;">
+      ON
     </p>
 
-    <div class="rule rule-names ani ani-rule-bot"></div>
-
-    <div class="date-stack ani ani-date">
-      <!-- I kept your </br> tags below, but you can also use the CSS spacing variables above! -->
-      <div class="ds-day on-light"></br></br></br>Saturday</div>
+    <div class="date-stack ani ani-date" style="animation-delay: 2.6s;">
+      <div class="ds-day on-light">Saturday</div>
       <div class="ds-line1 on-light">16th of May</div>
       <div class="ds-year on-light">2026</div>
     </div>
@@ -711,15 +857,24 @@ body{
   </div>
   
   <div id="quote-band" class="band">
+    <!-- NEW QUOTE TEXT -->
     <div class="quote-text rev on-light">
-      "Let us paint our life together <br>not in rigid lines, but in soft, <br>vibrant strokes of joy <br>& enduring love."
+      “This is the day that the Lord has made;<br>
+      let us rejoice and be glad in it.”<br>
+      <span class="quote-ref">(Psalm 118:24)</span>
     </div>
     <div class="rule rev" style="width:10%;margin:0 auto;"></div>
   </div>
   
+  <div class="section-separator">
+    <img class="separator-plant-img" id="separatorPlant"
+         src="https://drive.google.com/thumbnail?id=12GRXDh0I20gC_EI_X-unrw-o3O9oeq8u&sz=w1000"
+         alt="floral separator">
+  </div>
+  
   <div id="b2" class="band">
 
-    <div class="lbl rev on-light" style="margin-bottom:6px;">The Church<br>Ceremony</div>
+    <div class="lbl rev on-light" style="margin-bottom:6px;">The Church Ceremony</div>
 
     <div class="venue-pill rev">
       <div class="v-time">3:00 PM</div>
@@ -742,7 +897,7 @@ body{
     <div class="venue-pill rev">
       <div class="v-time">5:00 PM</div>
       <div class="v-event">Wedding Reception</div>
-      <div class="rule" style="width:80%;margin:3px auto;"></div>
+      <div class="rule" style="width:80%;margin:7px auto;"></div>
       <div class="v-where">
         JW Marriott Hotel<br>Mirage City, Ring Road · Cairo
       </div>
@@ -779,7 +934,7 @@ body{
 </div> <!-- END OF MAIN PAGE -->
 
 <!-- ═══════════════════════════════════════
-   RSVP MODAL (POPUP) - NOW OUTSIDE .page
+   RSVP MODAL (POPUP)
 ═══════════════════════════════════════ -->
 <div id="rsvpModal" class="modal-overlay">
   <div class="modal-content">
@@ -959,6 +1114,18 @@ document.querySelectorAll('.rev').forEach((el, idx) => {
   el.dataset.delay = sibIdx * 120;
   io.observe(el);
 });
+
+// Separator plant image — trigger on scroll
+const plantObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('plant-revealed');
+      plantObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.2 });
+const separatorPlant = document.getElementById('separatorPlant');
+if (separatorPlant) plantObs.observe(separatorPlant);
 </script>
 </body>
 </html>
