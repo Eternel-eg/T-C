@@ -49,10 +49,10 @@
   /* --- 4. SECTION POSITION CONTROLLERS (Move text blocks up/down the background image) --- */
   --pos-b1-top: 80%;       /* <-- TEXT POSITION CONTROLLER: Pushes the main top text ("Teresa & Claudio") further down the page */
   --pos-quote-top: 140%;     /* <-- TEXT POSITION CONTROLLER: Controls spacing above the "Being deeply loved" quote */
-  --pos-quote-bot: 28%;    /* <-- TEXT POSITION CONTROLLER: Controls spacing below the quote */
+  --pos-quote-bot: 30%;    /* <-- TEXT POSITION CONTROLLER: Controls spacing below the quote */
   --pos-b2-bot: 28%;       /* <-- TEXT POSITION CONTROLLER: Controls spacing below the Church section */
   --pos-b3-bot: 28%;       /* <-- TEXT POSITION CONTROLLER: Controls spacing below the Reception section */
-  --pos-b4-bot: 30%;       /* <-- TEXT POSITION CONTROLLER: Controls spacing below the RSVP section */
+  --pos-b4-bot: 28%;       /* <-- TEXT POSITION CONTROLLER: Controls spacing below the RSVP section */
   --pos-b5-top: 10%;       /* <-- TEXT POSITION CONTROLLER: Pushes the Closing ("With all our love") further down */
   --pos-b5-bot: 30%;       /* <-- TEXT POSITION CONTROLLER: Controls space at the absolute bottom of the page */
 
@@ -270,7 +270,9 @@ body{
   z-index: 2; 
   transform-origin: bottom center;
   opacity: 0;
-  animation: fadeInLower 2.5s ease 0.8s forwards;
+  animation: 
+    fadeInLower 2.5s ease 0.8s forwards,
+    lowerGlow 4s ease-in-out 3.3s infinite alternate;
 }
 .decor-upper { 
   z-index: 3; 
@@ -282,7 +284,10 @@ body{
   0%   { opacity: 0; }
   100% { opacity: 1; }
 }
-
+@keyframes lowerGlow {
+  0%   { filter: drop-shadow(0 0 0px rgba(255,255,255,0)); }
+  100% { filter: drop-shadow(0 0 25px rgba(255,255,255,0.4)); }
+}
 @keyframes floatUpper {
   0%   { transform: translateY(0) scale(1); }
   100% { transform: translateY(-1.5%) scale(1.02); }
@@ -847,7 +852,7 @@ body{
 
     <!-- Celebration and Date Elements now have their own spacing variables -->
     <p class="celebration-text on-light ani ani-pre" style="animation-delay: 2.4s;">
-      ON
+      at their wedding celebration
     </p>
 
     <div class="date-stack ani ani-date" style="animation-delay: 2.6s;">
@@ -1098,19 +1103,16 @@ function submitRSVPModal() {
 
   // ══════════════════════════════════════════════════
   // GOOGLE SHEETS INTEGRATION
-  // Replace the URL below with YOUR Apps Script Web App URL
-  // (See the tutorial comment at the bottom of this file)
   // ══════════════════════════════════════════════════
-  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwtDVbifTszo69VrFJ4QA_zloLt9oO8HaUCipW7L4Ve3viNlcFFqmbSUgetiEYE-kA4Rw/exec';
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbw4DNU6iuDVCfkcchmyJ7gOWsJsCHDsSfxWWoygrsTJX28Xm-0xq6SToOKKYwEBlpTCnw/exec';
 
-  const payload = {
-    name:     n,
-    attending: document.getElementById('mAtt').value,
-    guests:   document.getElementById('mGuests').value,
-    events:   document.getElementById('mEvents').value,
-    message:  document.getElementById('mMsg').value.trim(),
-    timestamp: new Date().toLocaleString()
-  };
+  const formData = new URLSearchParams();
+  formData.append('timestamp', new Date().toLocaleString());
+  formData.append('name', n);
+  formData.append('attending', document.getElementById('mAtt').value);
+  formData.append('guests', document.getElementById('mGuests').value);
+  formData.append('events', document.getElementById('mEvents').value);
+  formData.append('message', document.getElementById('mMsg').value.trim());
 
   const submitBtn = document.querySelector('.m-submit');
   submitBtn.textContent = 'Sending…';
@@ -1119,19 +1121,21 @@ function submitRSVPModal() {
   // Send to Google Sheets via Apps Script
   fetch(SHEET_URL, {
     method: 'POST',
-    mode: 'no-cors', // required for Apps Script
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
+    mode: 'no-cors',
+    body: formData
   })
   .then(() => {
-    // no-cors means we can't read the response, but if fetch didn't throw it was sent
     document.getElementById('modalForm').style.display = 'none';
     document.getElementById('modalSuccess').style.display = 'block';
+    submitBtn.textContent = 'SEND MY RESPONSE';
+    submitBtn.disabled = false;
   })
   .catch(() => {
     // Fallback: show success anyway (no-cors won't throw on network errors in some browsers)
     document.getElementById('modalForm').style.display = 'none';
     document.getElementById('modalSuccess').style.display = 'block';
+    submitBtn.textContent = 'SEND MY RESPONSE';
+    submitBtn.disabled = false;
   });
 }
 
@@ -1147,45 +1151,42 @@ STEP 1 — Create your Google Sheet
 
 STEP 2 — Open Apps Script
   • In your Sheet: Extensions → Apps Script
-  • Delete all existing code and paste this:
+  • Delete all existing code and paste this NEW version:
 
 ─────────────────────────────────────────────────────
 function doPost(e) {
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    const data  = JSON.parse(e.postData.contents);
+    // Replace with your actual Google Sheet ID
+    // The ID is the long string of random letters and numbers in your Google Sheet URL
+    // e.g. https://docs.google.com/spreadsheets/d/THIS_IS_THE_ID/edit
+    var sheetId = 'YOUR_SPREADSHEET_ID_HERE';
+    var sheet = SpreadsheetApp.openById(sheetId).getSheets()[0];
+
     sheet.appendRow([
-      data.timestamp,
-      data.name,
-      data.attending,
-      data.guests,
-      data.events,
-      data.message
+      e.parameter.timestamp,
+      e.parameter.name,
+      e.parameter.attending,
+      e.parameter.guests,
+      e.parameter.events,
+      e.parameter.message
     ]);
-    return ContentService
-      .createTextOutput(JSON.stringify({ result: 'success' }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return ContentService.createTextOutput("Success");
   } catch(err) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ result: 'error', error: err.toString() }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return ContentService.createTextOutput("Error: " + err.toString());
   }
 }
 ─────────────────────────────────────────────────────
 
-STEP 3 — Deploy as a Web App
-  • Click "Deploy" → "New deployment"
+STEP 3 — Deploy as a Web App (CRITICAL STEP)
+  • Click "Deploy" → "New deployment" 
+  • (If you are updating, you MUST go to Manage Deployments → Edit → Version: "New")
   • Type: Web App
   • Execute as: Me
   • Who has access: Anyone
   • Click "Deploy" → copy the Web App URL
 
 STEP 4 — Paste the URL into this file
-  • Find the line:  const SHEET_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
-  • Replace the placeholder with the URL you just copied
-
-STEP 5 — Done! 🎉
-  Every RSVP submission will appear as a new row in your Sheet.
+  • Replace the SHEET_URL variable above with your Web App URL
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 */
 
