@@ -47,7 +47,7 @@
   --size-closing-love: clamp(0.9rem, 1.2vw, 2rem);
 
   /* --- 4. SECTION POSITION CONTROLLERS (Move text blocks up/down the background image) --- */
-  --pos-b1-top: 80%;       /* <-- TEXT POSITION CONTROLLER: Pushes the main top text ("Teresa & Claudio") further down the page */
+  --pos-b1-top: 60%;       /* <-- TEXT POSITION CONTROLLER: Pushes the main top text ("Teresa & Claudio") further down the page */
   --pos-quote-top: 140%;     /* <-- TEXT POSITION CONTROLLER: Controls spacing above the "Being deeply loved" quote */
   --pos-quote-bot: 30%;    /* <-- TEXT POSITION CONTROLLER: Controls spacing below the quote */
   --pos-b2-bot: 28%;       /* <-- TEXT POSITION CONTROLLER: Controls spacing below the Church section */
@@ -118,32 +118,53 @@ body{
   50%      { transform: scale(1.15); opacity: 1; }
 }
 
-.loader-plant-container {
+.loader-rings-container {
   position: relative;
   margin-bottom: 25px;
-  animation: plantFloat 4s ease-in-out infinite;
+  animation: ringsFloat 4s ease-in-out infinite;
 }
-@keyframes plantFloat {
+@keyframes ringsFloat {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  50%       { transform: translateY(-8px); }
 }
 
-.plant-stem {
-  stroke-dasharray: 120;
-  stroke-dashoffset: 120;
-  animation: drawStem 2.5s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
+/* Ring 1 — slides in from left */
+.ring-left {
+  animation: slideRingLeft 1.4s cubic-bezier(0.34, 1.20, 0.64, 1) 0.3s both;
 }
-.plant-leaf, .plant-bud {
+/* Ring 2 — slides in from right */
+.ring-right {
+  animation: slideRingRight 1.4s cubic-bezier(0.34, 1.20, 0.64, 1) 0.3s both;
+}
+/* Diamond on ring 1 */
+.ring-diamond {
   opacity: 0;
-  transform: scale(0);
+  animation: diamondPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 1.6s forwards;
 }
-.plant-leaf.l1 { transform-origin: 31px 70px; animation: popLeaf 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 1.2s forwards; }
-.plant-leaf.l2 { transform-origin: 37px 45px; animation: popLeaf 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 1.7s forwards; }
-.plant-leaf.l3 { transform-origin: 33px 25px; animation: popLeaf 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 2.2s forwards; }
-.plant-bud { transform-origin: 30px 8px; animation: popLeaf 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 2.6s forwards; }
+/* Sparkle dots */
+.ring-sparkle {
+  opacity: 0;
+  animation: sparklePop 0.5s ease-out var(--sp-delay, 1.8s) forwards;
+}
 
-@keyframes drawStem { to { stroke-dashoffset: 0; } }
-@keyframes popLeaf { to { opacity: 1; transform: scale(1); } }
+@keyframes slideRingLeft {
+  from { transform: translateX(-38px); opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
+}
+@keyframes slideRingRight {
+  from { transform: translateX(38px);  opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
+}
+@keyframes diamondPop {
+  0%   { opacity: 0; transform: scale(0) translateY(-4px); }
+  70%  { transform: scale(1.3) translateY(-4px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes sparklePop {
+  0%   { opacity: 0; transform: scale(0); }
+  60%  { opacity: 1; transform: scale(1.4); }
+  100% { opacity: 0.85; transform: scale(1); }
+}
 
 .loader-logo-img {
   width: 55%;           
@@ -151,7 +172,8 @@ body{
   object-fit: contain;
   margin-bottom: 6px;
   opacity: 0;
-  animation: logoRevealLoader 1.5s cubic-bezier(0.22, 1, 0.36, 1) 1.5s forwards;
+  /* Adjusted delay from 1.5s to 0.8s so logo appears promptly */
+  animation: logoRevealLoader 1.5s cubic-bezier(0.22, 1, 0.36, 1) 0.8s forwards;
   filter: drop-shadow(0 0 15px rgba(179,146,86,0.25));
 }
 @keyframes logoRevealLoader {
@@ -374,7 +396,7 @@ body{
   padding: 0 5%;
 }
 .parent-name {
-  font-family: 'Sacramento', cursive; /* Elegant handwriting font */
+  font-family: 'EB Garamond', cursive; /* Elegant handwriting font */
   font-size: clamp(1rem, 5.5vw, 1.2rem);
   color: var(--ink);
   line-height: 1.2;
@@ -383,7 +405,7 @@ body{
   white-space: nowrap;
 }
 .parent-separator {
-  font-family: 'Sacramento', cursive;
+  font-family: 'EB Garamond', cursive;
   font-size: clamp(1.4rem, 4.5vw, 1.8rem);
   color: var(--dgold);
   font-style: normal;
@@ -410,7 +432,6 @@ body{
 .name-big{
   font-family: var(--font-name-big);
   font-size: var(--size-name-big);
-  line-height: var(--lh-name-big);
   color: var(--color-name-big);
   text-align: center; 
 }
@@ -804,13 +825,41 @@ body{
   <div class="loader-particles" id="loaderParticles"></div>
   <div class="loader-glow"></div>
   
-  <div class="loader-plant-container">
-    <svg class="growing-plant" width="60" height="90" viewBox="0 0 60 90">
-      <path class="plant-stem" d="M30 90 C 30 65 45 40 30 10" stroke="var(--dgold)" stroke-width="1.5" fill="none" stroke-linecap="round" />
-      <path class="plant-leaf l1" d="M31 70 C 15 70 10 55 20 50 C 25 50 31 60 31 70" fill="var(--dgold)" opacity="0.6"/>
-      <path class="plant-leaf l2" d="M37 45 C 55 45 60 30 45 25 C 40 25 37 35 37 45" fill="var(--dgold)" opacity="0.6"/>
-      <path class="plant-leaf l3" d="M33 25 C 15 25 10 10 20 5 C 25 5 33 15 33 25" fill="var(--dgold)" opacity="0.6"/>
-      <circle class="plant-bud" cx="30" cy="8" r="2.5" fill="var(--dgold)"/>
+  <div class="loader-rings-container">
+    <!-- Two interlocking marriage rings -->
+    <svg width="110" height="72" viewBox="0 0 110 72" xmlns="http://www.w3.org/2000/svg">
+      <!-- Ring 1 (left) -->
+      <g class="ring-left">
+        <circle cx="38" cy="38" r="24" fill="none" stroke="url(#goldGrad1)" stroke-width="5"/>
+        <!-- Diamond on ring 1 -->
+        <g class="ring-diamond" transform="translate(38,10)">
+          <polygon points="0,-7 5,-1 0,5 -5,-1" fill="url(#goldGrad1)" opacity="0.9"/>
+          <polygon points="0,-7 5,-1 0,0 -5,-1" fill="rgba(255,255,255,0.45)"/>
+        </g>
+      </g>
+      <!-- Ring 2 (right) -->
+      <g class="ring-right">
+        <circle cx="72" cy="38" r="24" fill="none" stroke="url(#goldGrad2)" stroke-width="5"/>
+      </g>
+      <!-- Sparkle dots -->
+      <circle class="ring-sparkle" cx="55" cy="10" r="2.5" fill="var(--dgold)" style="--sp-delay:1.9s"/>
+      <circle class="ring-sparkle" cx="15" cy="22" r="1.8" fill="var(--dgold)" style="--sp-delay:2.1s"/>
+      <circle class="ring-sparkle" cx="95" cy="22" r="1.8" fill="var(--dgold)" style="--sp-delay:2.0s"/>
+      <circle class="ring-sparkle" cx="8"  cy="46" r="1.4" fill="var(--dgold)" style="--sp-delay:2.3s"/>
+      <circle class="ring-sparkle" cx="102" cy="46" r="1.4" fill="var(--dgold)" style="--sp-delay:2.2s"/>
+      <!-- Gold gradients -->
+      <defs>
+        <linearGradient id="goldGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"   stop-color="#e8c97a"/>
+          <stop offset="50%"  stop-color="#b39256"/>
+          <stop offset="100%" stop-color="#d4a853"/>
+        </linearGradient>
+        <linearGradient id="goldGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%"   stop-color="#e8c97a"/>
+          <stop offset="50%"  stop-color="#b39256"/>
+          <stop offset="100%" stop-color="#d4a853"/>
+        </linearGradient>
+      </defs>
     </svg>
   </div>
 
@@ -833,25 +882,33 @@ body{
   <div id="b1" class="band">
 
     <!-- NEW INVITATION TYPOGRAPHY HIERARCHY -->
-    <div class="parents-wrapper on-light ani ani-pre" style="animation-delay: 1.2s;">
-      <div class="parent-name">Mr. and Mrs. Gargour</div>
+    <div class="request-text on-light ani ani-pre" style="animation-delay: 0.9s; margin-top: 38px; margin-bottom: 6px;">
+      Together with love,
+    </div>
+
+    <div class="parents-wrapper on-light ani ani-pre" style="animation-delay: 1.2s; margin-top: 0;">
+      <div class="parent-name">Mr. and Mrs.</br> Clement Gargour</div>
       <div class="parent-separator">&amp;</div>
-      <div class="parent-name">Mr. and Mrs. Lakah</div>
+      <div class="parent-name">Mr. and Mrs.</br>  Khalil Lakah</div>
     </div>
 
     <div class="request-text on-light ani ani-pre" style="animation-delay: 1.6s;">
-      request the honor of your presence<br>
-      at the wedding celebration of
+            Warmly invite you to         
+            <br>
+      the wedding of
     </div>
 
-    <div class="ani ani-name" style="animation-delay: 2s;">
-      <div class="name-big name-shimmer on-light">Teresa & Claudio</div>
+    <!-- MAIN NAMES STACKED HERE -->
+    <div class="ani ani-name" style="animation-delay: 2s; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+      <div class="name-big name-shimmer on-light" style="line-height: 1;">Claudio</div>
+      <div class="name-shimmer on-light" style="font-family: 'EB Garamond', serif; font-size: clamp(2rem, 6vw, 2.5rem); line-height: 1;">&amp;</div>
+      <div class="name-big name-shimmer on-light" style="line-height: 1;">Teresa</div>
     </div>
 
     <div class="rule rule-names ani ani-rule-bot" style="animation-delay: 2.2s;"></div>
 
     <!-- Celebration and Date Elements now have their own spacing variables -->
-    <p class="celebration-text on-light ani ani-pre" style="animation-delay: 2.4s;">
+    <p class="on-light ani ani-pre ds-day" style="animation-delay: 2.4s; font-size: var(--size-date-day); margin-bottom: var(--space-below-celebration); margin-top: var(--space-above-celebration);">
       On
     </p>
 
@@ -881,11 +938,10 @@ body{
   
   <div id="b2" class="band">
 
-    <div class="lbl rev on-light" style="margin-bottom:6px;">The Church Ceremony</div>
+
 
     <div class="venue-pill rev">
       <div class="v-time">3:00 PM</div>
-      <div class="v-event">Church Ceremony</div>
       <div class="rule" style="width:80%;margin:3px auto;"></div>
       <div class="v-where">
         St. Cyril Church<br>Korba, Heliopolis · Cairo
@@ -899,11 +955,10 @@ body{
   
   <div id="b3" class="band">
 
-    <div class="lbl rev on-light" style="margin-bottom:6px;">The Wedding Reception</div>
+    
 
     <div class="venue-pill rev">
       <div class="v-time">5:00 PM</div>
-      <div class="v-event">Wedding Reception</div>
       <div class="rule" style="width:80%;margin:7px auto;"></div>
       <div class="v-where">
         JW Marriott Hotel<br>Mirage City, Ring Road · Cairo
@@ -931,7 +986,7 @@ body{
 
     <div class="rev">
       <p class="closing-love on-light">With all our love,</p>
-      <div class="closing-names on-light"></br>Teresa & Claudio</div>
+      <div class="closing-names on-light"></br>Claudio & Teresa</div>
       <div class="rule" style="width:20%;margin:2px auto;"></div>
       <p class="closing-date">16 · MAY · 2026 · Cairo, Egypt</p>
     </div>
